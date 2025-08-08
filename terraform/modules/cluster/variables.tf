@@ -20,7 +20,7 @@ variable "vm_vcpu" {
 variable "iso_path" {
   description = "Path to Talos ISO file"
   type        = string
-  default     = "/mnt/local/libvirt/talos-metal.iso"
+  default     = "/mnt/local/libvirt/metal-amd64.iso"
 }
 
 variable "ultra_pool_name" {

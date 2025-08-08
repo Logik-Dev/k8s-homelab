@@ -42,15 +42,16 @@ provider "talos" {}
 
 # Configure Kubernetes Provider
 provider "kubernetes" {
-  config_path = fileexists("../kubeconfig") ? "../kubeconfig" : null
+  config_path = "../kubeconfig"
 }
 
 # Configure Helm Provider  
 provider "helm" {
-  kubernetes =  {
-    config_path = fileexists("../kubeconfig") ? "../kubeconfig" : null
+  kubernetes = {
+    config_path = "../kubeconfig"
   }
 }
+
 
 # Storage pools module
 module "pools" {
@@ -98,8 +99,8 @@ resource "null_resource" "install_cilium" {
   }
 
   provisioner "local-exec" {
-    when    = create
-    command = <<-EOT
+    when        = create
+    command     = <<-EOT
       set -e
 
       export KUBECONFIG=.${path.module}/kubeconfig
@@ -117,6 +118,44 @@ resource "null_resource" "install_cilium" {
       echo "🚀 Installing Cilium..."
       cilium install --version 1.17.6 --values ${path.module}/cilium/values.yaml
     EOT
-    working_dir = "${path.module}"
+    working_dir = path.module
+  }
+}
+
+resource "null_resource" "bootstrap_flux" {
+  depends_on = [
+    null_resource.install_cilium
+  ]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      set -e
+      
+      export KUBECONFIG=${path.module}/../kubeconfig
+      export GITHUB_TOKEN=$(pass show github/pat)
+      
+      echo "🔐 Bootstrapping age key for SOPS..."
+      ${path.module}/bootstrap-flux-agekey.sh
+      
+      echo "🚀 Bootstrapping FluxCD..."
+      flux bootstrap github \
+        --owner=Logik-Dev \
+        --repository=k8s-homelab \
+        --branch=main \
+        --path=clusters/talos \
+        --personal
+    EOT
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<-EOT
+      set -e
+      
+      export KUBECONFIG=${path.module}/../kubeconfig
+      
+      echo "🔄 Uninstalling FluxCD..."
+      flux uninstall --silent
+    EOT
   }
 }

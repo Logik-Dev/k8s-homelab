@@ -3,17 +3,40 @@ locals {
   nodes = {
     "talos-cp-1" = {
       node_ip      = "10.0.100.101"
+      vlan200_ip   = "10.0.200.101"
       machine_type = "controlplane"
+      hostname     = "talos1"
     }
     "talos-cp-2" = {
       node_ip      = "10.0.100.102"
+      vlan200_ip   = "10.0.200.102"
       machine_type = "controlplane"
+      hostname     = "talos2"
     }
     "talos-cp-3" = {
       node_ip      = "10.0.100.103"
+      vlan200_ip   = "10.0.200.103"
       machine_type = "controlplane"
+      machine_type = "controlplane"
+      hostname     = "talos3"
     }
   }
+}
+
+# Create libvirt networks for bridges
+resource "libvirt_network" "vlan100_network" {
+  name      = "vlan100-talos"
+  mode      = "bridge"
+  bridge    = "vlan100-talos"
+  autostart = true
+
+}
+
+resource "libvirt_network" "vlan200_network" {
+  name      = "vlan200-gateway"
+  mode      = "bridge"
+  bridge    = "vlan200-gateway"
+  autostart = true
 }
 
 # Create OS disks for VMs
@@ -80,9 +103,16 @@ resource "libvirt_domain" "talos_vm" {
   }
 
   # Kubernetes network interface
+  # Ip is reserved by my router
   network_interface {
-    bridge = "vlan100-talos"
-    mac    = "52:54:00:10:01:0${count.index + 1}"
+    network_id = libvirt_network.vlan100_network.id
+    mac        = "52:54:00:10:01:0${count.index + 1}"
+  }
+
+  # Ingress interface on vlan200 
+  # Ip is set in config patches 
+  network_interface {
+    network_id = libvirt_network.vlan200_network.id
   }
 
   # OS disk (ultra-fast)
@@ -141,16 +171,6 @@ data "talos_machine_configuration" "controlplane" {
   machine_type     = "controlplane"
   machine_secrets  = talos_machine_secrets.cluster_secrets.machine_secrets
 
-  config_patches = [
-    file("${path.root}/talos/patches/allow-controlplane-workloads.yaml"),
-    file("${path.root}/talos/patches/cni.yaml"),
-    file("${path.root}/talos/patches/dhcp.yaml"),
-    file("${path.root}/talos/patches/disks.yaml"),
-    file("${path.root}/talos/patches/extra-kernel-args.yaml"),
-    file("${path.root}/talos/patches/nodes-subnet.yaml"),
-    file("${path.root}/talos/patches/vip.yaml"),
-    file("${path.root}/talos/patches/gateway-api-crds.yaml")
-  ]
 }
 
 # Apply configuration to nodes
@@ -160,6 +180,37 @@ resource "talos_machine_configuration_apply" "controlplane" {
   client_configuration        = talos_machine_secrets.cluster_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
   node                        = each.value.node_ip
+  config_patches = [
+    file("${path.root}/talos/patches/allow-controlplane-workloads.yaml"),
+    file("${path.root}/talos/patches/cni.yaml"),
+    file("${path.root}/talos/patches/dhcp.yaml"),
+    file("${path.root}/talos/patches/disks.yaml"),
+    file("${path.root}/talos/patches/extra-kernel-args.yaml"),
+    file("${path.root}/talos/patches/nodes-subnet.yaml"),
+    file("${path.root}/talos/patches/vip.yaml"),
+    file("${path.root}/talos/patches/gateway-api-crds.yaml"),
+    yamlencode({
+      machine = {
+        network = {
+          hostname = each.value.hostname
+          interfaces = [
+            {
+              interface = "eth1"
+              dhcp = "true"
+               addresses = [each.value.vlan200_ip]
+               routes = [
+                 {
+                   network = "0.0.0.0/0"
+                   gateway = "10.0.200.1"
+                 }
+               ]
+            }
+          ]
+        }
+      }
+    })
+
+  ]
 
   depends_on = [libvirt_domain.talos_vm]
 }
