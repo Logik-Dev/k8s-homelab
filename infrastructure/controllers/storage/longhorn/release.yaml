@@ -15,7 +15,6 @@ spec:
         namespace: longhorn-system
       interval: 12h
   values:
-    enablePSP: true
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
       
