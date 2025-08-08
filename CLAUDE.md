@@ -55,6 +55,15 @@ talosctl kubeconfig --nodes <control-plane-ip>
 4. Bootstrap Kubernetes cluster
 5. Deploy applications and services
 
+### Cluster Management
+```bash
+# Destroy the cluster (preserves infrastructure)
+tofu destroy --target=module.cluster
+
+# Recreate the cluster with new configuration
+tofu apply
+```
+
 ## Key Configuration Files
 
 - `main.tf` or `*.tf` files: OpenTofu infrastructure definitions

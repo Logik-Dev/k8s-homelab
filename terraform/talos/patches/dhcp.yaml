@@ -4,4 +4,6 @@ machine:
     interfaces:
       - interface: eth0
         dhcp: true
+        dhcpOptions:
+          routeMetric: 100
 

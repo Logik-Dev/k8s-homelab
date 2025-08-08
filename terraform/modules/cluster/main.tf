@@ -196,11 +196,12 @@ resource "talos_machine_configuration_apply" "controlplane" {
           interfaces = [
             {
               interface = "eth1"
-              addresses = [each.value.vlan200_ip]
+              addresses = ["${each.value.vlan200_ip}/24"]
               routes = [
                  {
                    network = "0.0.0.0/0"
                    gateway = "10.0.200.1"
+                   metric  = 200
                  }
                ]
             }
