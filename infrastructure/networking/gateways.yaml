@@ -10,7 +10,7 @@ spec:
   gatewayClassName: cilium
   addresses:
   - type: IPAddress
-    value: 10.10.100.80
+    value: 10.10.200.100
   listeners:
   - name: https
     hostname: "*.k8s.logikdev.fr"
