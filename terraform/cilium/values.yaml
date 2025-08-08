@@ -40,6 +40,11 @@ gatewayAPI:
   enabled: true
   enableAlpn: true
   enableAppProtocol: true
+  gatewayClass:
+    create: "true"
+externalIPs:
+  enabled: true
+
 
 # L2 announcements for LoadBalancer services
 l2announcements:
