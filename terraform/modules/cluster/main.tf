@@ -2,286 +2,69 @@
 locals {
   nodes = {
     "talos-cp-1" = {
-      node_ip      = "10.0.100.101"
-      vlan200_ip   = "10.0.200.101"
-      machine_type = "controlplane"
-      hostname     = "talos1"
+      node_ip       = "10.0.100.101"
+      vlan200_ip    = "10.0.200.101"
+      machine_type  = "controlplane"
+      hostname      = "talos1"
+      longhorn_disk = "vdc"
     }
     "talos-cp-2" = {
-      node_ip      = "10.0.100.102"
-      vlan200_ip   = "10.0.200.102"
-      machine_type = "controlplane"
-      hostname     = "talos2"
+      node_ip       = "10.0.100.102"
+      vlan200_ip    = "10.0.200.102"
+      machine_type  = "controlplane"
+      hostname      = "talos2"
+      longhorn_disk = "vdb"
     }
     "talos-cp-3" = {
-      node_ip      = "10.0.100.103"
-      vlan200_ip   = "10.0.200.103"
-      machine_type = "controlplane"
-      machine_type = "controlplane"
-      hostname     = "talos3"
+      node_ip       = "10.0.100.103"
+      vlan200_ip    = "10.0.200.103"
+      machine_type  = "controlplane"
+      hostname      = "talos3"
+      longhorn_disk = "vdc"
     }
   }
 }
 
-# Get extensions versions for Talos Image Factory
-data "talos_image_factory_extensions_versions" "cluster_extensions" {
-  talos_version = var.talos_version
-  filters = {
-    names = [
-      "i915-ucode",
-      "iscsi-tools",
-      "qemu-guest-agent", 
-      "util-linux-tools"
-    ]
-  }
+# VMs module
+module "vms" {
+  source = "./vms"
+
+  vm_count         = var.vm_count
+  vm_memory        = var.vm_memory
+  vm_vcpu          = var.vm_vcpu
+  ultra_pool_name  = var.ultra_pool_name
+  talos_version    = var.talos_version
+  iso_storage_path = var.iso_storage_path
+  nodes            = local.nodes
 }
 
-# Create Image Factory schematic with system extensions
-resource "talos_image_factory_schematic" "cluster_schematic" {
-  schematic = yamlencode(
-    {
-      customization = {
-        systemExtensions = {
-          officialExtensions = data.talos_image_factory_extensions_versions.cluster_extensions.extensions_info.*.name
-        }
-      }
-    }
-  )
-}
+# Talos module
+module "talos" {
+  source = "./talos"
 
-# Download Talos ISO from Image Factory using generated schematic
-resource "null_resource" "download_talos_iso" {
-  triggers = {
-    talos_version    = var.talos_version
-    schematic_id     = talos_image_factory_schematic.cluster_schematic.id
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      ssh hyper "sudo mkdir -p ${var.iso_storage_path}"
-      ssh hyper "sudo wget -O ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso https://factory.talos.dev/image/${talos_image_factory_schematic.cluster_schematic.id}/${var.talos_version}/metal-amd64.iso"
-      ssh hyper "sudo chmod 644 ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso"
-    EOT
-  }
-}
-
-# Create libvirt networks for bridges
-resource "libvirt_network" "vlan100_network" {
-  name      = "vlan100-talos"
-  mode      = "bridge"
-  bridge    = "vlan100-talos"
-  autostart = true
-
-}
-
-resource "libvirt_network" "vlan200_network" {
-  name      = "vlan200-gateway"
-  mode      = "bridge"
-  bridge    = "vlan200-gateway"
-  autostart = true
-}
-
-# Create OS disks for VMs
-resource "libvirt_volume" "os_disk" {
-  count  = var.vm_count
-  name   = "talos-os-${count.index + 1}.qcow2"
-  pool   = var.ultra_pool_name
-  format = "qcow2"
-  size   = 50 * 1024 * 1024 * 1024 # 50GB
-}
-
-# Create additional local-nvme disks
-resource "libvirt_volume" "vm_local_disk" {
-  count  = var.vm_count
-  name   = "talos-local-${count.index + 1}.qcow2"
-  pool   = "local-pool"
-  format = "qcow2"
-  size   = 100 * 1024 * 1024 * 1024 # 100GB
-}
-
-# Create additional ultra-fast disks
-resource "libvirt_volume" "vm_ultra_disk" {
-  count  = var.vm_count
-  name   = "talos-ultra-${count.index + 1}.qcow2"
-  pool   = var.ultra_pool_name
-  format = "qcow2"
-  size   = 100 * 1024 * 1024 * 1024 # 100GB
-}
-
-# Create VMs
-resource "libvirt_domain" "talos_vm" {
-  count  = var.vm_count
-  name   = "talos-vm-${count.index + 1}"
-  memory = var.vm_memory
-  vcpu   = var.vm_vcpu
-
-  # CPU configuration - use host CPU features
-  cpu {
-    mode = "host-passthrough"
-  }
-
-  xml {
-    xslt = <<EOF
-    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-      <xsl:output method="xml" indent="yes"/>
-      <xsl:template match="@*|node()">
-        <xsl:copy><xsl:apply-templates select="@*|node()"/></xsl:copy>
-      </xsl:template>
-
-      <xsl:template match="cpu">
-        <cpu>
-          <xsl:copy-of select="@*"/>
-          <topology sockets="1" cores="${var.vm_vcpu}" threads="1"/>
-          <xsl:apply-templates select="node()"/>
-        </cpu>
-      </xsl:template>
-    </xsl:stylesheet>
-    EOF
-  }
-
-  # Boot configuration - boot from Hard disk and fallback to CD-ROM
-  boot_device {
-    dev = ["hd", "cdrom"]
-  }
-
-  # Kubernetes network interface
-  # Ip is reserved by my router
-  network_interface {
-    network_id = libvirt_network.vlan100_network.id
-    mac        = "52:54:00:10:01:0${count.index + 1}"
-  }
-
-  # Ingress interface on vlan200 
-  # Ip is set in config patches 
-  network_interface {
-    network_id = libvirt_network.vlan200_network.id
-  }
-
-  # OS disk (ultra-fast)
-  disk {
-    volume_id = libvirt_volume.os_disk[count.index].id
-  }
-
-  # Local-nvme disk
-  disk {
-    volume_id = libvirt_volume.vm_local_disk[count.index].id
-  }
-
-  # Ultra-fast disk
-  disk {
-    volume_id = libvirt_volume.vm_ultra_disk[count.index].id
-  }
-
-  # CD-ROM with Talos ISO
-  disk {
-    file = "${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso"
-  }
-
-  # Console access
-  console {
-    type        = "pty"
-    target_port = "0"
-    target_type = "serial"
-  }
-
-  graphics {
-    type        = "spice"
-    listen_type = "address"
-    autoport    = true
-  }
-
-  depends_on = [null_resource.download_talos_iso]
-}
-
-# Create snapshots of VMs after initial creation
-resource "null_resource" "vm_snapshots" {
-  count = var.vm_count
-
-  # Create snapshot after VM is created
-  provisioner "local-exec" {
-    command = "ssh hyper 'sudo virsh snapshot-create-as talos-vm-${count.index + 1} initial-snapshot \"Initial snapshot after VM creation\"'"
-  }
-
-  depends_on = [libvirt_domain.talos_vm]
-}
-
-# Talos cluster configuration
-resource "talos_machine_secrets" "cluster_secrets" {}
-
-# Generate machine configurations
-data "talos_machine_configuration" "controlplane" {
   cluster_name     = var.cluster_name
   cluster_endpoint = var.cluster_endpoint
-  machine_type     = "controlplane"
-  machine_secrets  = talos_machine_secrets.cluster_secrets.machine_secrets
-
+  talos_version    = var.talos_version
+  nodes            = local.nodes
+  vm_ids           = module.vms.vm_ids
+  schematic_id     = module.vms.schematic_id
 }
 
-# Apply configuration to nodes
-resource "talos_machine_configuration_apply" "controlplane" {
-  for_each = local.nodes
+# Cilium module
+module "cilium" {
+  source = "./cilium"
 
-  client_configuration        = talos_machine_secrets.cluster_secrets.client_configuration
-  machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
-  node                        = each.value.node_ip
-  config_patches = [
-    file("${path.root}/talos/patches/allow-controlplane-workloads.yaml"),
-    file("${path.root}/talos/patches/cni.yaml"),
-    file("${path.root}/talos/patches/dhcp.yaml"),
-    file("${path.root}/talos/patches/disks.yaml"),
-    file("${path.root}/talos/patches/extra-kernel-args.yaml"),
-    file("${path.root}/talos/patches/nodes-subnet.yaml"),
-    file("${path.root}/talos/patches/vip.yaml"),
-    file("${path.root}/talos/patches/gateway-api-crds.yaml"),
-    yamlencode({
-      machine = {
-        install = {
-          image = "factory.talos.dev/metal-installer/${talos_image_factory_schematic.cluster_schematic.id}:${var.talos_version}"
-        }
-        network = {
-          hostname = each.value.hostname
-          interfaces = [
-            {
-              interface = "eth1"
-              addresses = ["${each.value.vlan200_ip}/24"]
-              routes = [
-                 {
-                   network = "0.0.0.0/0"
-                   gateway = "10.0.200.1"
-                   metric  = 200
-                 }
-               ]
-            }
-          ]
-        }
-      }
-    })
+  kubeconfig_path    = "${path.root}/../kubeconfig"
+  cilium_values_path = "${path.module}/cilium/values.yaml"
 
-  ]
-
-  depends_on = [libvirt_domain.talos_vm]
+  depends_on = [module.talos]
 }
 
-# Bootstrap the cluster
-resource "talos_machine_bootstrap" "bootstrap" {
-  client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
-  node                 = local.nodes["talos-cp-1"].node_ip
+# Flux module
+module "flux" {
+  source = "./flux"
 
-  depends_on = [talos_machine_configuration_apply.controlplane]
-}
+  kubeconfig_path = "${path.root}/../kubeconfig"
 
-# Get cluster kubeconfig
-resource "talos_cluster_kubeconfig" "kubeconfig" {
-  depends_on = [
-    talos_machine_bootstrap.bootstrap
-  ]
-  client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
-  node                 = local.nodes["talos-cp-1"].node_ip
-}
-
-# Get talos client configuration
-data "talos_client_configuration" "client_config" {
-  cluster_name         = var.cluster_name
-  client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
-  endpoints            = [for node in local.nodes : node.node_ip]
+  depends_on = [module.cilium]
 }

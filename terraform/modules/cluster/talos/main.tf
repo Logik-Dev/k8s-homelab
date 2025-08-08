@@ -1,0 +1,94 @@
+
+# Talos cluster configuration
+resource "talos_machine_secrets" "cluster_secrets" {}
+
+# Generate machine configurations
+data "talos_machine_configuration" "controlplane" {
+  cluster_name     = var.cluster_name
+  cluster_endpoint = var.cluster_endpoint
+  machine_type     = "controlplane"
+  machine_secrets  = talos_machine_secrets.cluster_secrets.machine_secrets
+}
+
+# Apply configuration to nodes
+resource "talos_machine_configuration_apply" "controlplane" {
+  for_each = var.nodes
+
+  client_configuration        = talos_machine_secrets.cluster_secrets.client_configuration
+  machine_configuration_input = data.talos_machine_configuration.controlplane.machine_configuration
+  node                        = each.value.node_ip
+  config_patches = [
+    file("${path.module}/patches/allow-controlplane-workloads.yaml"),
+    file("${path.module}/patches/cni.yaml"),
+    file("${path.module}/patches/dhcp.yaml"),
+    file("${path.module}/patches/disks.yaml"),
+    file("${path.module}/patches/extra-kernel-args.yaml"),
+    file("${path.module}/patches/nodes-subnet.yaml"),
+    file("${path.module}/patches/vip.yaml"),
+    file("${path.module}/patches/gateway-api-crds.yaml"),
+
+    # longhorn disk is not on the same pool for each node
+    yamlencode({
+      apiVersion = "v1alpha1"
+      kind       = "UserVolumeConfig"
+      name       = "longhorn"
+      provisioning = {
+        diskSelector = {
+          match = "disk.dev_path == '/dev/${each.value.longhorn_disk}'"
+        }
+        minSize = "100GB"
+      }
+    }),
+
+    # define hostname and second ip
+    yamlencode({
+      machine = {
+        install = {
+          image = "factory.talos.dev/metal-installer/${var.schematic_id}:${var.talos_version}"
+        }
+        network = {
+          hostname = each.value.hostname
+          interfaces = [
+            {
+              interface = "eth1"
+              addresses = ["${each.value.vlan200_ip}/24"]
+              routes = [
+                {
+                  network = "0.0.0.0/0"
+                  gateway = "10.0.200.1"
+                  metric  = 200
+                }
+              ]
+            }
+          ]
+        }
+      }
+    })
+  ]
+
+  depends_on = [var.vm_ids]
+}
+
+# Bootstrap the cluster
+resource "talos_machine_bootstrap" "bootstrap" {
+  client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
+  node                 = [for k, v in var.nodes : v.node_ip if k == "talos-cp-1"][0]
+
+  depends_on = [talos_machine_configuration_apply.controlplane]
+}
+
+# Get cluster kubeconfig
+resource "talos_cluster_kubeconfig" "kubeconfig" {
+  depends_on = [
+    talos_machine_bootstrap.bootstrap
+  ]
+  client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
+  node                 = [for k, v in var.nodes : v.node_ip if k == "talos-cp-1"][0]
+}
+
+# Get talos client configuration
+data "talos_client_configuration" "client_config" {
+  cluster_name         = var.cluster_name
+  client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
+  endpoints            = [for node in var.nodes : node.node_ip]
+}
