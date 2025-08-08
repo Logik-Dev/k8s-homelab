@@ -17,10 +17,17 @@ variable "vm_vcpu" {
   default     = 4
 }
 
-variable "iso_path" {
-  description = "Path to Talos ISO file"
+variable "talos_version" {
+  description = "Talos Linux version"
   type        = string
-  default     = "/mnt/local/libvirt/metal-amd64.iso"
+  default     = "v1.10.6"
+}
+
+
+variable "iso_storage_path" {
+  description = "Storage path for downloaded ISO on hypervisor"
+  type        = string
+  default     = "/mnt/local/libvirt/"
 }
 
 variable "ultra_pool_name" {

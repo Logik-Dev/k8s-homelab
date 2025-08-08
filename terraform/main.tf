@@ -66,7 +66,6 @@ module "cluster" {
   vm_count         = 3
   vm_memory        = 16384 # 16 GiB
   vm_vcpu          = 2
-  iso_path         = "/mnt/local/libvirt/talos-metal.iso"
   cluster_name     = "talos"
   cluster_endpoint = "https://10.0.100.100:6443"
 }

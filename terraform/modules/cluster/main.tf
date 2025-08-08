@@ -23,6 +23,48 @@ locals {
   }
 }
 
+# Get extensions versions for Talos Image Factory
+data "talos_image_factory_extensions_versions" "cluster_extensions" {
+  talos_version = var.talos_version
+  filters = {
+    names = [
+      "i915-ucode",
+      "iscsi-tools",
+      "qemu-guest-agent", 
+      "util-linux-tools"
+    ]
+  }
+}
+
+# Create Image Factory schematic with system extensions
+resource "talos_image_factory_schematic" "cluster_schematic" {
+  schematic = yamlencode(
+    {
+      customization = {
+        systemExtensions = {
+          officialExtensions = data.talos_image_factory_extensions_versions.cluster_extensions.extensions_info.*.name
+        }
+      }
+    }
+  )
+}
+
+# Download Talos ISO from Image Factory using generated schematic
+resource "null_resource" "download_talos_iso" {
+  triggers = {
+    talos_version    = var.talos_version
+    schematic_id     = talos_image_factory_schematic.cluster_schematic.id
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh hyper "sudo mkdir -p ${var.iso_storage_path}"
+      ssh hyper "sudo wget -O ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso https://factory.talos.dev/image/${talos_image_factory_schematic.cluster_schematic.id}/${var.talos_version}/metal-amd64.iso"
+      ssh hyper "sudo chmod 644 ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso"
+    EOT
+  }
+}
+
 # Create libvirt networks for bridges
 resource "libvirt_network" "vlan100_network" {
   name      = "vlan100-talos"
@@ -132,7 +174,7 @@ resource "libvirt_domain" "talos_vm" {
 
   # CD-ROM with Talos ISO
   disk {
-    file = var.iso_path
+    file = "${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso"
   }
 
   # Console access
@@ -147,6 +189,8 @@ resource "libvirt_domain" "talos_vm" {
     listen_type = "address"
     autoport    = true
   }
+
+  depends_on = [null_resource.download_talos_iso]
 }
 
 # Create snapshots of VMs after initial creation
@@ -191,6 +235,9 @@ resource "talos_machine_configuration_apply" "controlplane" {
     file("${path.root}/talos/patches/gateway-api-crds.yaml"),
     yamlencode({
       machine = {
+        install = {
+          image = "factory.talos.dev/metal-installer/${talos_image_factory_schematic.cluster_schematic.id}:${var.talos_version}"
+        }
         network = {
           hostname = each.value.hostname
           interfaces = [
