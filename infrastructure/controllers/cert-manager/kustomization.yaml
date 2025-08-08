@@ -6,4 +6,3 @@ resources:
   - repository.yaml
   - release.yaml
   - cloudflare-api-token.yaml
-#  - cluster-issuer.yaml
