@@ -17,4 +17,4 @@ spec:
             key: api-token
       selector:
         dnsZones:
-          - "k8s.logikdev.fr"
+          - "logikdev.fr"

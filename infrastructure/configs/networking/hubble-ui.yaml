@@ -10,7 +10,7 @@ spec:
   - name: vlan200-gateway
     namespace: networking
   hostnames:
-  - "hubble.k8s.logikdev.fr"
+  - "hubble.logikdev.fr"
   rules:
   - matches:
     - path:
