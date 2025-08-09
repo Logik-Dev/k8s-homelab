@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: radarr
+  namespace: seedbox
+spec:
+  parentRefs:
+  - name: vlan200-gateway
+    namespace: networking
+  hostnames:
+  - radarr.logikdev.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: radarr
+      port: 80

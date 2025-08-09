@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: seedbox
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+      - name: radarr
+        image: lscr.io/linuxserver/radarr:5.26.2
+        ports:
+        - name: http
+          containerPort: 7878
+          protocol: TCP
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "992"
+        - name: TZ
+          value: "Europe/Paris"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7878
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7878
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        volumeMounts:
+        - name: config-storage
+          mountPath: /config
+        - name: media-storage
+          mountPath: /mnt/storage/medias/movies
+          subPath: movies
+        - name: media-storage
+          mountPath: /mnt/storage/medias/downloads
+          subPath: downloads
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+      volumes:
+      - name: config-storage
+        persistentVolumeClaim:
+          claimName: radarr-longhorn
+      - name: media-storage
+        persistentVolumeClaim:
+          claimName: media-storage
