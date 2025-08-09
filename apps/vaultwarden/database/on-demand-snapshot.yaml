@@ -1,0 +1,9 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+    name: vaultwarden
+    namespace: vaultwarden
+spec:
+    cluster:
+        name: vaultwarden-db
+    method: volumeSnapshot
