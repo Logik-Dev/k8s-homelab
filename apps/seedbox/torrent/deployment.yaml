@@ -66,14 +66,12 @@ spec:
             - name: shadowsocks-udp
               containerPort: 8388
               protocol: UDP
-          volumeMounts:
-            - name: tun-device
-              mountPath: /dev/net/tun
           resources:
             requests:
               memory: "128Mi"
               cpu: "100m"
             limits:
+              squat.ai/tun: "1" # tun device via generic-device-plugin
               memory: "256Mi"
               cpu: "300m"
         - name: qbittorrent
@@ -132,10 +130,6 @@ spec:
               memory: "2Gi"
               cpu: "2"
       volumes:
-        - name: tun-device
-          hostPath:
-            path: /dev/net/tun
-            type: CharDevice
         - name: media-storage
           persistentVolumeClaim:
             claimName: media-storage
