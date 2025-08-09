@@ -51,10 +51,10 @@ spec:
         - name: config-storage
           mountPath: /config
         - name: media-storage
-          mountPath: /mnt/future/medias/series
+          mountPath: /mnt/storage/medias/series
           subPath: series
         - name: media-storage
-          mountPath: /mnt/future/medias/downloads
+          mountPath: /mnt/storage/medias/downloads
           subPath: downloads
         resources:
           requests:

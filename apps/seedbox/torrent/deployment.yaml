@@ -115,10 +115,10 @@ spec:
             successThreshold: 1
           volumeMounts:
             - name: media-storage
-              mountPath: /mnt/future/medias/downloads
+              mountPath: /mnt/storage/medias/downloads
               subPath: downloads
             - name: media-storage
-              mountPath: /mnt/future/medias/ratio
+              mountPath: /mnt/storage/medias/ratio
               subPath: ratio
             - name: config-storage
               mountPath: /config
