@@ -38,14 +38,16 @@ parameters:
   server: 192.168.10.100
   share: /mnt/ultra/k8s
   subDir: "${pvc.metadata.name}"
-mountOptions: 
-  - vers=4.2 
-  - rsize=1048576
-  - wsize=1048576
+mountOptions:
+  - vers=4.2
+  - rsize=65536
+  - wsize=65536
   - hard
-  - intr
   - timeo=600
+  - retrans=2
   - noatime
+  - nodiratime
+  - tcp
 reclaimPolicy: Retain
 volumeBindingMode: Immediate
 allowVolumeExpansion: true
