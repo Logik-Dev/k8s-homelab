@@ -135,4 +135,4 @@ spec:
             claimName: media-storage
         - name: config-storage
           persistentVolumeClaim:
-            claimName: qbittorrent-config
+            claimName: qbittorrent-longhorn
