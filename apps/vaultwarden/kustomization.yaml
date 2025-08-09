@@ -3,3 +3,8 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - database
+  - env.yaml
+  - pvc.yaml
+  - service.yaml
+  - httproute.yaml
+  - deployment.yaml
