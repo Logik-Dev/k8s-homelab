@@ -36,6 +36,5 @@ variable "nodes" {
     vlan200_ip    = string
     machine_type  = string
     hostname      = string
-    longhorn_disk = string
   }))
 }

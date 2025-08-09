@@ -26,19 +26,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
     file("${path.module}/patches/nodes-subnet.yaml"),
     file("${path.module}/patches/vip.yaml"),
     file("${path.module}/patches/gateway-api-crds.yaml"),
-
-    # longhorn disk is not on the same pool for each node
-    yamlencode({
-      apiVersion = "v1alpha1"
-      kind       = "UserVolumeConfig"
-      name       = "longhorn"
-      provisioning = {
-        diskSelector = {
-          match = "disk.dev_path == '/dev/${each.value.longhorn_disk}'"
-        }
-        minSize = "100GB"
-      }
-    }),
+    file("${path.module}/patches/volumes.yaml"),
 
     # define hostname and second ip
     yamlencode({
