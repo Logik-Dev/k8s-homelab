@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyseerr
+  namespace: seedbox
+spec:
+  selector:
+    app: jellyseerr
+  ports:
+  - name: http
+    port: 80
+    targetPort: 5055
+    protocol: TCP

@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: jellyseerr
+  namespace: seedbox
+spec:
+  parentRefs:
+  - name: vlan200-gateway
+    namespace: networking
+  hostnames:
+  - jellyseerr.logikdev.fr
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: jellyseerr
+      port: 80
