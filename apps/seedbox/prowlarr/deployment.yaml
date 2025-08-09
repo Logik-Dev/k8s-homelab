@@ -60,4 +60,4 @@ spec:
       volumes:
       - name: config-storage
         persistentVolumeClaim:
-          claimName: prowlarr-config
+          claimName: prowlarr-longhorn
