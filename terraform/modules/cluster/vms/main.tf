@@ -62,6 +62,10 @@ resource "libvirt_volume" "os_disk" {
   pool   = var.ultra_pool_name
   format = "qcow2"
   size   = 50 * 1024 * 1024 * 1024 # 50GB
+  
+  lifecycle {
+    ignore_changes = [size]
+  }
 }
 
 # Create additional local-nvme disks
@@ -70,7 +74,11 @@ resource "libvirt_volume" "vm_local_disk" {
   name   = "talos-local-${count.index + 1}.qcow2"
   pool   = "local-pool"
   format = "qcow2"
-  size   = 100 * 1024 * 1024 * 1024 # 100GB
+  size   = 150 * 1024 * 1024 * 1024 # 100GB
+  
+  lifecycle {
+    ignore_changes = [size]
+  }
 }
 
 # Create additional ultra-fast disks
@@ -79,7 +87,11 @@ resource "libvirt_volume" "vm_ultra_disk" {
   name   = "talos-ultra-${count.index + 1}.qcow2"
   pool   = var.ultra_pool_name
   format = "qcow2"
-  size   = 100 * 1024 * 1024 * 1024 # 100GB
+  size   = 500 * 1024 * 1024 * 1024 # 100GB
+  
+  lifecycle {
+    ignore_changes = [size]
+  }
 }
 
 # Create VMs
@@ -121,7 +133,7 @@ resource "libvirt_domain" "talos_vm" {
   # Kubernetes network interface
   # Ip is reserved by my router
   network_interface {
-    network_id = libvirt_network.vlan100_network.id
+    network_name = libvirt_network.vlan100_network.id
     mac        = "52:54:00:10:01:0${count.index + 1}"
   }
 
