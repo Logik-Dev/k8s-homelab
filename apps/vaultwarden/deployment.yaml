@@ -40,4 +40,4 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: vaultwarden
+          claimName: vaultwarden-longhorn
