@@ -6,6 +6,7 @@ provisioning:
   diskSelector:
     match: disk.dev_path == '/dev/vdc'
   minSize: 100GB
+  grow: true
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
@@ -14,4 +15,4 @@ provisioning:
   diskSelector:
     match: disk.dev_path == '/dev/vdb'
   minSize: 100GB
-
+  grow: true
