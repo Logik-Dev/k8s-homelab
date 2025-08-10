@@ -33,10 +33,12 @@ spec:
                   storage: 50Gi
     grafana:
       enabled: true
-      adminPassword: admin
+      adminPassword: admin # change on first login
       persistence:
         enabled: true
-        storageClassName: longhorn
+        type: sts
+        storageClassName: "longhorn"
+        accessModes: ["ReadWriteOnce"]
         size: 10Gi
     alertmanager:
       alertmanagerSpec:
