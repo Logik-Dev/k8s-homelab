@@ -21,8 +21,7 @@ spec:
       enabled: true
       podMonitorEnabled: true
       grafanaDashboard:
-        create: true
-        namespace: monitoring
+        create: false
     resources:
       limits:
         cpu: 200m
