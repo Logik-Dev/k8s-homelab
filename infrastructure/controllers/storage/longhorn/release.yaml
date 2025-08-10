@@ -17,4 +17,9 @@ spec:
   values:
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
+    metrics:
+      serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack
       
