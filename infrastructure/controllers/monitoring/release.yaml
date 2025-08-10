@@ -6,6 +6,7 @@ metadata:
   namespace: monitoring
 spec:
   interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: kube-prometheus-stack
@@ -17,8 +18,14 @@ spec:
       interval: 12h
   install:
     crds: CreateReplace
+    timeout: 10m
+    remediation:
+      retries: 3
   upgrade:
     crds: CreateReplace
+    timeout: 10m
+    remediation:
+      retries: 3
   values:
     prometheus:
       prometheusSpec:
