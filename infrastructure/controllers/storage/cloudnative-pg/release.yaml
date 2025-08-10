@@ -20,8 +20,11 @@ spec:
     monitoring:
       enabled: true
       podMonitorEnabled: true
+      podMonitorAdditionalLabels:
+        release: kube-prometheus-stack
       grafanaDashboard:
-        create: false
+        create: true
+        namespace: monitoring
     resources:
       limits:
         cpu: 200m
