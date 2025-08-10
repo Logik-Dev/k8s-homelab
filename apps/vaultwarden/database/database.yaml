@@ -18,6 +18,8 @@ spec:
   storage:
     storageClass: longhorn-no-replicas
     size: 10Gi
+  monitoring:
+    enablePodMonitor: true
   # longhorn snapshot
   backup:
     volumeSnapshot:
