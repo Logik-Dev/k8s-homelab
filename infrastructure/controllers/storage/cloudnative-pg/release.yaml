@@ -16,11 +16,13 @@ spec:
         namespace: cnpg-system
       interval: 12h
   values:
-    # Enable monitoring with Prometheus
+    # TODO cnpg depends on prometheus
     monitoring:
-      enabled: false
-      podMonitorEnabled: false
-    # Resource limits for the operator
+      enabled: true
+      podMonitorEnabled: true
+      grafanaDashboard:
+        create: true
+        namespace: monitoring
     resources:
       limits:
         cpu: 200m
@@ -28,7 +30,6 @@ spec:
       requests:
         cpu: 100m
         memory: 100Mi
-    # Security context
     securityContext:
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
