@@ -30,12 +30,12 @@ spec:
       isWALArchiver: true
       parameters:
        barmanObjectName: minio
-       serverName: vaultwarden-db-talos  # destination
+       serverName: vaultwarden-db  # destination
   # recover from minio
-  externalClusters:
-    - name: minio
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: minio
-          serverName: vaultwarden-db-ter # source
+  # externalClusters:
+  #   - name: minio
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters:
+  #         barmanObjectName: minio
+  #         serverName: vaultwarden-db-ter # source

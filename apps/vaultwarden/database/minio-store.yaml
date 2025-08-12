@@ -6,7 +6,7 @@ metadata:
     namespace: vaultwarden
 spec:
     configuration:
-        destinationPath: s3://vaultwarden
+        destinationPath: s3://vaultwarden-db
         endpointURL: https://s3.logikdev.fr 
         s3Credentials:
             accessKeyId:
