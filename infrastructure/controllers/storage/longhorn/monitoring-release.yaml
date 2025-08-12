@@ -1,9 +1,15 @@
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: longhorn-base
+  name: longhorn-monitoring
   namespace: longhorn-system
 spec:
+  dependsOn:
+    - name: longhorn-base
+      namespace: longhorn-system
+    - name: kube-prometheus-stack
+      namespace: monitoring
   interval: 30m
   chart:
     spec:
@@ -15,10 +21,11 @@ spec:
         namespace: longhorn-system
       interval: 12h
   values:
+    # Only enable monitoring components - inherit everything else from longhorn-base
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
-    # Disable monitoring for initial deployment to avoid circular dependency
     metrics:
       serviceMonitor:
-        enabled: false
-      
+        enabled: true
+        additionalLabels:
+          release: kube-prometheus-stack

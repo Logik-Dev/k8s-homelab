@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - repository.yaml
-  - release.yaml
+  - release.yaml  # longhorn-base (without monitoring)
+  - monitoring-release.yaml  # longhorn-monitoring (with monitoring after kube-prometheus-stack)
