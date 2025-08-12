@@ -12,9 +12,9 @@ spec:
     major: 15
   superuserSecret:
     name: postgres-creds
-  # bootstrap:
-  #   recovery:
-  #     source: minio
+  bootstrap:
+    recovery:
+      source: minio
   storage:
     storageClass: longhorn-no-replicas
     size: 10Gi
@@ -31,11 +31,11 @@ spec:
       parameters:
        barmanObjectName: minio
        serverName: vaultwarden-db  # destination
-  # recover from minio
-  # externalClusters:
-  #   - name: minio
-  #     plugin:
-  #       name: barman-cloud.cloudnative-pg.io
-  #       parameters:
-  #         barmanObjectName: minio
-  #         serverName: vaultwarden-db-ter # source
+  #recover from minio
+  externalClusters:
+    - name: minio
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: minio-lock
+          serverName: vaultwarden-db-talos # source
