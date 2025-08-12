@@ -5,6 +5,11 @@ metadata:
   name: cloudnative-pg
   namespace: cnpg-system
 spec:
+  dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
+    - name: kube-prometheus-stack
+      namespace: monitoring
   interval: 30m
   chart:
     spec:
@@ -16,7 +21,6 @@ spec:
         namespace: cnpg-system
       interval: 12h
   values:
-    # TODO cnpg depends on prometheus
     monitoring:
       enabled: true
       podMonitorEnabled: true
