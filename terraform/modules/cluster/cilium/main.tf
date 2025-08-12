@@ -4,8 +4,9 @@ resource "null_resource" "install_cilium" {
     command = <<-EOT
       echo "🔄 Uninstalling Cilium before cluster is destroyed..."
       export KUBECONFIG=../kubeconfig
-      cilium uninstall --wait
+      cilium uninstall --wait || echo "⚠️ Cilium uninstall failed, continuing..."
     EOT
+    on_failure = continue
   }
 
   provisioner "local-exec" {
@@ -42,4 +43,6 @@ resource "null_resource" "install_cilium" {
     EOT
     working_dir = path.root
   }
+
+  depends_on = [var.kubeconfig_dependency]
 }

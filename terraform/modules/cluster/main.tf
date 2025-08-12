@@ -51,8 +51,9 @@ module "talos" {
 module "cilium" {
   source = "./cilium"
 
-  kubeconfig_path    = "${path.root}/../kubeconfig"
-  cilium_values_path = "${path.module}/cilium/values.yaml"
+  kubeconfig_path       = "${path.root}/../kubeconfig"
+  cilium_values_path    = "${path.module}/cilium/values.yaml"
+  kubeconfig_dependency = module.talos.kubeconfig_resource
 
   depends_on = [module.talos]
 }

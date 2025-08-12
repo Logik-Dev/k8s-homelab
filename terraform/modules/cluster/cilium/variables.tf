@@ -7,3 +7,9 @@ variable "cilium_values_path" {
   description = "Path to Cilium values.yaml file"
   type        = string
 }
+
+variable "kubeconfig_dependency" {
+  description = "Dependency to ensure kubeconfig is available during destroy"
+  type        = any
+  default     = null
+}

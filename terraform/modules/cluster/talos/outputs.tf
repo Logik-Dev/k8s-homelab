@@ -9,3 +9,8 @@ output "talos_config" {
   value       = data.talos_client_configuration.client_config.talos_config
   sensitive   = true
 }
+
+output "kubeconfig_resource" {
+  description = "Kubeconfig resource for dependency management"
+  value       = talos_cluster_kubeconfig.kubeconfig
+}

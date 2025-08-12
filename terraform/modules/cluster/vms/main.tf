@@ -40,21 +40,6 @@ resource "null_resource" "download_talos_iso" {
   }
 }
 
-# Create libvirt networks for bridges
-resource "libvirt_network" "vlan100_network" {
-  name      = "vlan100-talos"
-  mode      = "bridge"
-  bridge    = "vlan100-talos"
-  autostart = true
-}
-
-resource "libvirt_network" "vlan200_network" {
-  name      = "vlan200-gateway"
-  mode      = "bridge"
-  bridge    = "vlan200-gateway"
-  autostart = true
-}
-
 # Create OS disks for VMs
 resource "libvirt_volume" "os_disk" {
   count  = var.vm_count
@@ -62,10 +47,6 @@ resource "libvirt_volume" "os_disk" {
   pool   = var.ultra_pool_name
   format = "qcow2"
   size   = 50 * 1024 * 1024 * 1024 # 50GB
-  
-  lifecycle {
-    ignore_changes = [size]
-  }
 }
 
 # Create additional local-nvme disks
@@ -75,10 +56,6 @@ resource "libvirt_volume" "vm_local_disk" {
   pool   = "local-pool"
   format = "qcow2"
   size   = 150 * 1024 * 1024 * 1024 # 100GB
-  
-  lifecycle {
-    ignore_changes = [size]
-  }
 }
 
 # Create additional ultra-fast disks
@@ -88,10 +65,6 @@ resource "libvirt_volume" "vm_ultra_disk" {
   pool   = var.ultra_pool_name
   format = "qcow2"
   size   = 500 * 1024 * 1024 * 1024 # 100GB
-  
-  lifecycle {
-    ignore_changes = [size]
-  }
 }
 
 # Create VMs
@@ -106,25 +79,6 @@ resource "libvirt_domain" "talos_vm" {
     mode = "host-passthrough"
   }
 
-  xml {
-    xslt = <<EOF
-    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-      <xsl:output method="xml" indent="yes"/>
-      <xsl:template match="@*|node()">
-        <xsl:copy><xsl:apply-templates select="@*|node()"/></xsl:copy>
-      </xsl:template>
-
-      <xsl:template match="cpu">
-        <cpu>
-          <xsl:copy-of select="@*"/>
-          <topology sockets="1" cores="${var.vm_vcpu}" threads="1"/>
-          <xsl:apply-templates select="node()"/>
-        </cpu>
-      </xsl:template>
-    </xsl:stylesheet>
-    EOF
-  }
-
   # Boot configuration - boot from Hard disk and fallback to CD-ROM
   boot_device {
     dev = ["hd", "cdrom"]
@@ -133,14 +87,14 @@ resource "libvirt_domain" "talos_vm" {
   # Kubernetes network interface
   # Ip is reserved by my router
   network_interface {
-    network_name = libvirt_network.vlan100_network.id
+    bridge = "vlan100-talos"
     mac        = "52:54:00:10:01:0${count.index + 1}"
   }
 
   # Ingress interface on vlan200 
   # Ip is set in config patches 
   network_interface {
-    network_id = libvirt_network.vlan200_network.id
+    bridge = "vlan200-gateway"
   }
 
   # OS disk (ultra-fast)

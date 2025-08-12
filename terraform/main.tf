@@ -24,7 +24,7 @@ terraform {
     key    = "k8s-homelab/terraform.tfstate"
     region = "us-east-1"
 
-    endpoint                    = "http://192.168.10.100:9000"
+    endpoint                    = "https://s3.logikdev.fr"
     use_path_style              = true
     skip_credentials_validation = true
     skip_metadata_api_check     = true
@@ -65,7 +65,7 @@ module "cluster" {
   ultra_pool_name  = module.pools.ultra_pool_name
   vm_count         = 3
   vm_memory        = 16384 # 16 GiB
-  vm_vcpu          = 2
+  vm_vcpu          = 4
   cluster_name     = "talos"
   cluster_endpoint = "https://10.0.100.100:6443"
 }
