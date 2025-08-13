@@ -22,13 +22,13 @@ spec:
         - name: http
           containerPort: 8989
           protocol: TCP
-        env:
-        - name: PUID
-          value: "1000"
-        - name: PGID
-          value: "992"
-        - name: TZ
-          value: "Europe/Paris"
+        envFrom:
+        - configMapRef:
+              name: seedbox
+        - configMapRef:
+              name: sonarr
+        - secretRef:
+              name: sonarr
         livenessProbe:
           httpGet:
             path: /

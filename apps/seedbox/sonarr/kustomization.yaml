@@ -4,4 +4,6 @@ resources:
   - deployment.yaml
   - service.yaml
   - httproute.yaml
-  - pvc.yaml
+  #- pvc.yaml
+  - secrets.yaml
+  - configmap.yaml
