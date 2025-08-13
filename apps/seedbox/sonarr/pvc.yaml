@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: sonarr-longhorn
   namespace: seedbox
+  labels:
+    recurring-job.longhorn.io/source: "enabled"
+    recurring-job-group.longhorn.io/app: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
