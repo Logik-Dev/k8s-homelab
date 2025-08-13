@@ -64,9 +64,9 @@ spec:
             memory: "1Gi"
             cpu: "1"
       volumes:
-      - name: config-storage
-        persistentVolumeClaim:
-          claimName: sonarr-longhorn
+      # - name: config-storage
+      #   persistentVolumeClaim:
+      #     claimName: sonarr-longhorn
       - name: media-storage
         persistentVolumeClaim:
           claimName: media-storage
