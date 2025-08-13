@@ -4,6 +4,11 @@ metadata:
   name: sonarr
   namespace: seedbox
 data:
-  SONARR_AUTH_REQUIRED: enabled
-  SONARR_AUTH_METHOD: forms
+  # AUTH MUST BE DISABLED ON FIRST INIT
+  SONARR__AUTH__REQUIRED: Enabled
+  SONARR__AUTH__METHOD: Forms
+  SONARR__POSTGRES__PORT: "5432"
+  SONARR__POSTGRES__USER: sonarr
+  SONARR__POSTGRES__MAINDB: sonarr-main
+  SONARR__POSTGRES__LOGDB: sonarr-logs
 

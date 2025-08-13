@@ -1,0 +1,23 @@
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+    name: sonarr-store
+    namespace: seedbox
+spec:
+    configuration:
+        destinationPath: s3://sonarr
+        endpointURL: https://s3.logikdev.fr 
+        s3Credentials:
+            accessKeyId:
+                name: minio-credentials
+                key: MINIO_ROOT_USER
+            secretAccessKey:
+                name: minio-credentials
+                key: MINIO_ROOT_PASSWORD
+        wal:
+          compression: gzip
+          maxParallel: 8
+        data:
+          compression: gzip
+

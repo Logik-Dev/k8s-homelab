@@ -1,0 +1,58 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: sonarr-db
+  namespace: seedbox
+spec:
+  instances: 3
+  bootstrap:
+    recovery:
+      owner: sonarr
+      source: source
+  superuserSecret:
+    name: postgres-creds
+  storage:
+    storageClass: longhorn-no-replicas
+    size: 10Gi
+  monitoring:
+    enablePodMonitor: true
+  # backup
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: sonarr-store
+      serverName: sonarr-1
+  # restore
+  externalClusters:
+  - name: source
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        barmanObjectName: sonarr-store
+        serverName: sonarr-init
+# Sonarr Main DB
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-main
+  namespace: seedbox
+spec:
+  name: sonarr-main
+  owner: sonarr
+  cluster:
+    name: sonarr-db
+---
+# Sonarr Logs DB
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-logs
+  namespace: seedbox
+spec:
+  name: sonarr-logs
+  owner: sonarr
+  cluster:
+    name: sonarr-db
+

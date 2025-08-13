@@ -22,6 +22,17 @@ spec:
         - name: http
           containerPort: 8989
           protocol: TCP
+        env:
+          - name: SONARR__POSTGRES__HOST
+            valueFrom:
+              secretKeyRef:
+                name: sonarr-db-app
+                key: host
+          - name: SONARR__POSTGRES__PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: sonarr-db-app
+                key: password
         envFrom:
         - configMapRef:
               name: seedbox
