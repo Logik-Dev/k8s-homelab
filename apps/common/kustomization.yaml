@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - minio-creds.yaml
   - generic-device-plugin.yaml
+  - backup-jobs.yaml

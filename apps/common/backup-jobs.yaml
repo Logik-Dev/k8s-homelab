@@ -5,7 +5,7 @@ metadata:
   name: hourly-app-snapshot
   namespace: longhorn-system
 spec:
-  cron: "5 * * * *"
+  cron: "15 * * * *"
   task: snapshot
   retain: 24
   group: app
@@ -17,7 +17,7 @@ metadata:
   name: daily-app-backup
   namespace: longhorn-system
 spec:
-  cron: "15 7 * * *"      
+  cron: "20 7 * * *"      
   task: backup
   retain: 14 
   group: app
