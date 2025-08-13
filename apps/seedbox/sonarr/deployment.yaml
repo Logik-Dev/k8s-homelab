@@ -48,8 +48,8 @@ spec:
           failureThreshold: 3
           successThreshold: 1
         volumeMounts:
-        - name: config-storage
-          mountPath: /config
+        #- name: config-storage
+        #  mountPath: /config
         - name: media-storage
           mountPath: /mnt/storage/medias/series
           subPath: series
