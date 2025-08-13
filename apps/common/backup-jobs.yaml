@@ -5,7 +5,7 @@ metadata:
   name: hourly-app-snapshot
   namespace: longhorn-system
 spec:
-  cron: "20 * * * *"
+  cron: "25 * * * *"
   task: snapshot
   retain: 24
   groups:
@@ -14,6 +14,7 @@ spec:
     group: apps
     frequency: hourly
     type: snapshot
+  concurrency: 5
 ---
 # Daily app backup
 apiVersion: longhorn.io/v1beta2
@@ -31,3 +32,4 @@ spec:
     group: apps
     frequency: daily
     type: backup
+  concurrency: 1
