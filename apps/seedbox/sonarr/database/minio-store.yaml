@@ -5,16 +5,17 @@ metadata:
     name: sonarr-store
     namespace: seedbox
 spec:
+    retentionPolicy: "90d"
     configuration:
-        destinationPath: s3://sonarr
+        destinationPath: s3://sonarr-db
         endpointURL: https://s3.logikdev.fr 
         s3Credentials:
             accessKeyId:
-                name: minio-credentials
-                key: MINIO_ROOT_USER
+                name: sonarr-minio-credentials
+                key: AWS_ACCESS_KEY_ID
             secretAccessKey:
-                name: minio-credentials
-                key: MINIO_ROOT_PASSWORD
+                name: sonarr-minio-credentials
+                key: AWS_SECRET_ACCESS_KEY
         wal:
           compression: gzip
           maxParallel: 8

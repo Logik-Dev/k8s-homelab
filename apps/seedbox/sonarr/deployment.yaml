@@ -23,15 +23,10 @@ spec:
           containerPort: 8989
           protocol: TCP
         env:
-          - name: SONARR__POSTGRES__HOST
-            valueFrom:
-              secretKeyRef:
-                name: sonarr-db-app
-                key: host
           - name: SONARR__POSTGRES__PASSWORD
             valueFrom:
               secretKeyRef:
-                name: sonarr-db-app
+                name: sonarr-db-secrets
                 key: password
         envFrom:
         - configMapRef:
@@ -59,8 +54,6 @@ spec:
           failureThreshold: 3
           successThreshold: 1
         volumeMounts:
-        #- name: config-storage
-        #  mountPath: /config
         - name: media-storage
           mountPath: /mnt/storage/medias/series
           subPath: series
@@ -75,9 +68,6 @@ spec:
             memory: "1Gi"
             cpu: "1"
       volumes:
-      # - name: config-storage
-      #   persistentVolumeClaim:
-      #     claimName: sonarr-longhorn
       - name: media-storage
         persistentVolumeClaim:
           claimName: media-storage
