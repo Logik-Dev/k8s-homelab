@@ -5,6 +5,7 @@ metadata:
     name: radarr-store
     namespace: seedbox
 spec:
+    retentionPolicy: "90d"
     configuration:
         destinationPath: s3://radarr-db
         endpointURL: https://s3.logikdev.fr 
