@@ -6,15 +6,11 @@ metadata:
 spec:
   instances: 3
   bootstrap:
-    initdb:
+    recovery:
       owner: radarr
+      source: source
       secret:
         name: radarr-db-secrets
-    # recovery:
-    #   owner: radarr
-    #   source: source
-  #superuserSecret:
-    #name: postgres-creds
   storage:
     storageClass: longhorn-no-replicas
     size: 10Gi
@@ -26,15 +22,15 @@ spec:
     isWALArchiver: true
     parameters:
       barmanObjectName: radarr-store
-      serverName: radarr-init
+      serverName: radarr-1
   # restore
-  # externalClusters:
-  # - name: source
-  #   plugin:
-  #     name: barman-cloud.cloudnative-pg.io
-  #     parameters:
-  #       barmanObjectName: sonarr-store
-  #       serverName: sonarr-init
+  externalClusters:
+  - name: source
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        barmanObjectName: radarr-store
+        serverName: radarr-init
 # Radarr Main DB
 ---
 apiVersion: postgresql.cnpg.io/v1

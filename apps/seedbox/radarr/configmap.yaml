@@ -5,8 +5,8 @@ metadata:
   namespace: seedbox
 data:
   # AUTH MUST BE DISABLED ON FIRST INIT
-  #RADARR__AUTH__REQUIRED: Enabled
-  #RADARR__AUTH__METHOD: Forms
+  RADARR__AUTH__REQUIRED: Enabled
+  RADARR__AUTH__METHOD: Forms
   RADARR__POSTGRES__HOST: radarr-db-rw
   RADARR__POSTGRES__PORT: "5432"
   RADARR__POSTGRES__USER: radarr
