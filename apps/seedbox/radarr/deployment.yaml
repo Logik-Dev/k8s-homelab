@@ -54,6 +54,8 @@ spec:
           failureThreshold: 3
           successThreshold: 1
         volumeMounts:
+        - name: radarr-assets
+          mountPath: /config
         - name: media-storage
           mountPath: /mnt/storage/medias/movies
           subPath: movies
@@ -68,6 +70,9 @@ spec:
             memory: "1Gi"
             cpu: "1"
       volumes:
+      - name: radarr-assets
+        persistentVolumeClaim:
+          claimName: radarr-assets
       - name: media-storage
         persistentVolumeClaim:
           claimName: media-storage
