@@ -54,6 +54,8 @@ spec:
           failureThreshold: 3
           successThreshold: 1
         volumeMounts:
+        - name: sonarr-assets
+          mountPath: /config
         - name: media-storage
           mountPath: /mnt/storage/medias/series
           subPath: series
@@ -68,6 +70,9 @@ spec:
             memory: "1Gi"
             cpu: "1"
       volumes:
+      - name: sonarr-assets
+        persistentVolumeClaim:
+          claimName: sonarr-assets
       - name: media-storage
         persistentVolumeClaim:
           claimName: media-storage
