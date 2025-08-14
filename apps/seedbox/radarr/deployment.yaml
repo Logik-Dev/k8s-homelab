@@ -23,12 +23,18 @@ spec:
           containerPort: 7878
           protocol: TCP
         env:
-        - name: PUID
-          value: "1000"
-        - name: PGID
-          value: "992"
-        - name: TZ
-          value: "Europe/Paris"
+          - name: RADARR__POSTGRES__PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: radarr-db-secrets
+                key: password
+        envFrom:
+        - configMapRef:
+              name: seedbox
+        - configMapRef:
+              name: radarr
+        - secretRef:
+              name: radarr
         livenessProbe:
           httpGet:
             path: /
@@ -48,8 +54,6 @@ spec:
           failureThreshold: 3
           successThreshold: 1
         volumeMounts:
-        - name: config-storage
-          mountPath: /config
         - name: media-storage
           mountPath: /mnt/storage/medias/movies
           subPath: movies
@@ -64,9 +68,6 @@ spec:
             memory: "1Gi"
             cpu: "1"
       volumes:
-      - name: config-storage
-        persistentVolumeClaim:
-          claimName: radarr-longhorn
       - name: media-storage
         persistentVolumeClaim:
           claimName: media-storage
