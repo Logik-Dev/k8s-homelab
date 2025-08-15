@@ -16,14 +16,12 @@ spec:
     size: 10Gi
   monitoring:
     enablePodMonitor: true
-  # backup
   plugins:
   - name: barman-cloud.cloudnative-pg.io
     isWALArchiver: true
     parameters:
       barmanObjectName: sonarr-store
       serverName: sonarr-1
-  # restore
   externalClusters:
   - name: source
     plugin:
