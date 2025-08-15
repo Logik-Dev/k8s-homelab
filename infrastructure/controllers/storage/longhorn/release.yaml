@@ -18,7 +18,8 @@ spec:
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
     defaultBackupStore:
-      backupTarget: nfs://192.168.10.100:/mnt/storage/archives
+      backupTarget: https://s3.logikdev.fr/longhorn
+      backupTargetCredentialSecret: longhorn-minio-credentials
       pollInterval: 180
     # Disable monitoring for initial deployment to avoid circular dependency
     metrics:

@@ -1,0 +1,68 @@
+# https://kubernetes.io/docs/concepts/configuration/secret/
+apiVersion: v1
+kind: Secret
+metadata:
+    name: longhorn-minio-credentials
+    namespace: longhorn-system
+type: Opaque
+stringData:
+    AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:ax4kBX2EmTDmelcVPA==,iv:8m4LPUcnSwbFl5ymnox/eI56nqKBV1319ZoqyDCXF3w=,tag:YRYdczSpIkSFwyjsgkmvJg==,type:str]
+    AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:5Hyxxu1Nn4bgSj+9fJiTvbFmLDxW6B/XdxQ0BYz8nDI=,iv:n5K/MwZA2cDWt9cSCG2z3YlQmAdU8gd6yK3y1YTq3LI=,tag:OqUP1Sh2oel7sP6m5Xf7Mg==,type:str]
+sops:
+    age:
+        - recipient: age12cd6wdnk3su0wkedg7lm5uvcg79hqw28yp6e3h6y944wcaj94cgs53w43h
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwaENkMjBGdnR1WjFraHE0
+            OWhRUzNoTmJsN29lUnJMTGh4UHQ2KzAvV3pJClVLbEh4dXZKZldLTTFVaGkybUc5
+            UHZIL2ZNb3NxeVFSM0I3MjlWTlJIclUKLS0tIEtQeWpwcU42N09jR1UrTVJTME1a
+            MGNwOG10OUFCTHJ1K1g1aUo3VlN4Z2sKXva5dRj6GClHWMD6l+jas/XxArCErb/X
+            KIHpJ1Y0TvLQrjP/IN5sh/+ajaDNlZ3SGIAHz8OANHKnl/P9yvCv9Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-08-15T21:32:24Z"
+    mac: ENC[AES256_GCM,data:9hiKa4dhLKY97t/P5mmE5YvowYQO2ee5QS/56z9IgJIZihxdfz2CAcEpMx3IC+pqy2bG7SUlJGHuy0/WV3zkAffwI3CPPYRjR6xhw5Ha0EYtEzGg0wA+OGujrhIHm8JfzVj3w58c2+c91zaHSatZzXwzHn8yGZ7BRUy5LXQ3jko=,iv:4vmwCbuDXILvtZDFZEMdr+JuFf/QBBAQGCvYZxqwfEk=,tag:yoYcqYCQFCeM9EO3Z1MDdg==,type:str]
+    pgp:
+        - created_at: "2025-08-15T21:30:48Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA9uG/vun765dAQ//ZDtpxdTkf7ClO+vtaz/93mcuxIAy8AJN6HmQyx75UWLw
+            afK7J8aHi6BdR2iA93zO0lZOgh+9QBzXu1kwjkidsbhGBHCxpjFtIKDfvO7pdvNC
+            u5ku0pBPw9xxu0ArgC14dMhMMJ3XW4/4BKdu0tFIsxB2Mo5aNEHt0NYNlIrWajFa
+            63LriwjlL5a92Y3jVzt/4BSrAZNk13Je3ZEButNEaHRvILj5hGSjrUJruVjDx+sz
+            ESk9S5w1Kvq5FbNpfIHY0xGE9ZlOUlxcNo6lXRW5cbTr1AmS5bErtgOwZ6Ep721C
+            vwb8eFkaneCzRDRScOQjt1xAikvY2yc9pfh/h2ORPei95gkpk6jJI1SG0fo3AHew
+            MCZaLdpjWgKqGD4oGhq1HQ6jjY2ZSJ5IZV/Iq0OrOpvsD3VrDe7PlIZ5qSS4dOsF
+            doxu5UgC8MGuQqPHwh6+EdPstFvDPHRtZ3CWIRz/uRx5TCR72KPyHEaUJsh6g1Vx
+            BUkKZ/YJaOiwWeNU1YwaCUPKVFeA3ISPxKZrvkuUF2t/vAsjb8wucqgGLeImrR8I
+            M2nf0OMNfXVrhNGNSun9W/3psZ9RYvdzDkXC0SibqRuAa2w2Y9oOlDPJX1MWTY0+
+            2JCow82p3hsngMN97cDlGa3gNY3RD+YauxTXwGCgIfwW0WBKC1mAE0eohwXFA1GF
+            AgwDM/F2oUAwsAcBD/97uTC6t1d5Y55/RXzchUPjxHZqmAiaEP404ISfePVWaR6I
+            jYDZmpVrp6FnqJd6zgczwQfATTt70jHILKX3XUqYvmF3pOpmTR0kAkq4i2jtomM8
+            drcRRE94xGfgPyKSK6E4cf6MPlipRRwdU3BmtwlpHFf1C8weuTL5N4GJVbY8cnB3
+            RdH1oj8/p5UPveSIz3cql8zZZs9xzihVWSiI7TF7K3BpqYKuNuupm4lqc/R/vq/1
+            1d7ZdXr+zIyZQC0HLqqtPDaYXo++U2/ylogetnEVbzPNZiRWHwUVjTlkCzZ7VBLc
+            kBAVr6eXaTzxGkBH0Y7R/9fJUSr2AG+w/+A7+TT7ZNk+J3hOpK7uJNyHY59MX5eM
+            PHo944cc4aBTYfvrW8z2UgQsUewYv5MymDaTgfXdPgWIsfqMSaZDBTqo0UIHUIEK
+            FeTUBN3OnrgAl1Z4dB+JPr2EafB4EndDo4ZCnkYIj35YDfu+lzy8xTZU59WxkAeV
+            BDbH28PsuRZeru4TYzcJczDr9T9G+++Kw9u9zVhdWkoAVGCwWoDubMopvdP6G8Nh
+            BhyjDafz7dSCKnb0dMuy6ZoOcdRyrsUt/PADa4gpio4WsUwEsX3IuuGYMx0oU4/F
+            rbMapTWuZ11XMMbb2Ux5AByl99pqDZTQ/hBTa0McmJiNZ76xcBLhYMHDhxuLx4UC
+            DAOGLKZO92RuOQEP/1W9cjlcrqgivEfY/ME5P7rnx6s8f680tiOzk5M1znKSzNDH
+            HNqH/GwD06/+vkUqtOazyi8b95vnwu93c6BODs9e3nTdCSMHak0Yfw11BU+UXSXF
+            ku7Ou8yFKQ5K9FvwHil1InghXwjAmqB3x/n8GVbIwPjoyMM9A46XyPyXcs6LTFsm
+            P90p/1XQOFBNSLrrW8CrmBvVedhOw1ei/oKrZRlvZAZgy+YvAzaLKXhBkg/YdNJ7
+            MfEPWN6EwJ+PgYkdkTLqmnpjizkxmI0EKQp+M4znIEUNxpM2JbTrMZt5VzZ6Oi81
+            2k3trYsYwIkt8A4qXKREQEEHMWau9wyc3gY+unWCvu/QuOlCv7By9BHZbsRxn+mr
+            Iiel/qtULUkxVSOmEglzyy46bf2/sOKe/iOJ0XKbPYttDqO3+TqaRVj49M5qeonY
+            GQLp7zpKiMO1DsQLxTlN2+hL+3Gyx6GaLlSEp0vdzS4eP6VNexSUgwskXI6UA14T
+            G334SGJqDzw/ugGJVL/k3Np8TwNmoMNwcIQz64rkawSxUQmMcFF/pAoOo5OZsTop
+            nOPyjEI0iBW913ohf8PpG4YdrXxa5D2QWA2I36T7Q2XBOwPiTSUNUkD1yNRqoqgr
+            01ltEOd573LiKimQm8EXkjhfiYEu4+jiVOqCkpUyxgWRcnXjf7lVjKMb2isI0l4B
+            Ee/+1nsmFBOh35qXGGhwKpPQjykxryTJkvbZa6U4OYTQd+k5JsKmNWjoOIZXholY
+            HqWgjsH8nmstdA8nEo6cgNnPYZN/9YprTdbnG9Cf6pJzSrJLOSB3i/cicLEV
+            =sOLm
+            -----END PGP MESSAGE-----
+          fp: F5A34D392D22853E7EB1FA85AC259B4007CB7CE9
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2

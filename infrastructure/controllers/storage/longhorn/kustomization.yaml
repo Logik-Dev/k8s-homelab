@@ -3,6 +3,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
+  - minio-creds.yaml
   - repository.yaml
   - release.yaml  # longhorn-base (without monitoring)
   - monitoring-release.yaml  # longhorn-monitoring (with monitoring after kube-prometheus-stack)
