@@ -2,12 +2,12 @@
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
-  name: hourly-app-snapshot
+  name: daily-app-snapshot
   namespace: longhorn-system
 spec:
-  cron: "25 * * * *"
+  cron: "0 3 * * *"
   task: snapshot
-  retain: 24
+  retain: 7
   groups:
     - app
   labels:
@@ -20,12 +20,12 @@ spec:
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
-  name: daily-app-backup
+  name: weekly-app-backup
   namespace: longhorn-system
 spec:
-  cron: "35 5 * * *"      
+  cron: "0 4 * * 1"      
   task: backup
-  retain: 14 
+  retain: 8
   groups: 
     - app
   labels:
