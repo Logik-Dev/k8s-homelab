@@ -5,7 +5,7 @@ metadata:
   name: vlan200-gateway
   namespace: networking
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   gatewayClassName: cilium
   addresses:
