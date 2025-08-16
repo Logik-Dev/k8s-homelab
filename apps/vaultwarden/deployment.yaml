@@ -18,12 +18,6 @@ spec:
         image: vaultwarden/server:1.34.3
         ports:
         - containerPort: 80
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: vaultwarden-db-app
-              key: uri
         envFrom:
         - secretRef:
             name: vaultwarden-env

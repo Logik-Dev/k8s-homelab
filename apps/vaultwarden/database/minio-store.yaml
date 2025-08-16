@@ -5,6 +5,7 @@ metadata:
     name: vaultwarden-store
     namespace: vaultwarden
 spec:
+    retentionPolicy: "90d"
     configuration:
         destinationPath: s3://vaultwarden-db
         endpointURL: https://s3.logikdev.fr 
