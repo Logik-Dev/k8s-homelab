@@ -16,7 +16,7 @@ spec:
       interval: 12h
   values:
     defaultSettings:
-      defaultDataPath: "/var/mnt/longhorn"
+      defaultDataPath: "/var/mnt/longhorn-ultra"
     defaultBackupStore:
       backupTarget: s3://longhorn@us-east-1/
       backupTargetCredentialSecret: longhorn-minio-credentials
