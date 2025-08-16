@@ -21,14 +21,14 @@ spec:
     isWALArchiver: true
     parameters:
       barmanObjectName: radarr-store
-      serverName: radarr-1
+      serverName: radarr-2
   externalClusters:
   - name: source
     plugin:
       name: barman-cloud.cloudnative-pg.io
       parameters:
         barmanObjectName: radarr-store
-        serverName: radarr-init
+        serverName: radarr-1
 # Radarr Main DB
 ---
 apiVersion: postgresql.cnpg.io/v1

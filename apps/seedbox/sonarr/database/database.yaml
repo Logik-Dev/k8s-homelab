@@ -21,14 +21,14 @@ spec:
     isWALArchiver: true
     parameters:
       barmanObjectName: sonarr-store
-      serverName: sonarr-1
+      serverName: sonarr-2
   externalClusters:
   - name: source
     plugin:
       name: barman-cloud.cloudnative-pg.io
       parameters:
         barmanObjectName: sonarr-store
-        serverName: sonarr-init
+        serverName: sonarr-1
 # Sonarr Main DB
 ---
 apiVersion: postgresql.cnpg.io/v1

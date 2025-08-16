@@ -30,11 +30,11 @@ spec:
       isWALArchiver: true
       parameters:
        barmanObjectName: vaultwarden-store
-       serverName: vaultwarden-1
+       serverName: vaultwarden-2
   externalClusters:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: vaultwarden-store
-          serverName: vaultwarden-init
+          serverName: vaultwarden-1
