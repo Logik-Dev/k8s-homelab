@@ -5,4 +5,3 @@ resources:
   - cert-manager
   - networking
   - storage
-  - monitoring
