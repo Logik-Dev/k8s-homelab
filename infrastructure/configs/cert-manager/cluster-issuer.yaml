@@ -18,6 +18,7 @@ spec:
       selector:
         dnsZones:
           - "logikdev.fr"
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -36,5 +37,6 @@ spec:
             name: cloudflare-api-token
             key: api-token
       selector:
-        dnsZones:
+        dnsZones: 
+          - "logikdev.fr"
  
