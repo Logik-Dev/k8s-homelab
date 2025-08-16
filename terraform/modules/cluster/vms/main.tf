@@ -49,28 +49,29 @@ resource "libvirt_volume" "os_disk" {
   size   = 50 * 1024 * 1024 * 1024 # 50GB
 }
 
-# Create additional local-nvme disks
+# Create additional local-nvme disks for workers only
 resource "libvirt_volume" "vm_local_disk" {
-  count  = var.vm_count
-  name   = "talos-local-${count.index + 1}.qcow2"
+  count  = length([for k, v in var.nodes : k if v.machine_type == "worker"])
+  name   = "talos-local-worker-${count.index + 1}.qcow2"
   pool   = "local-pool"
   format = "qcow2"
-  size   = 150 * 1024 * 1024 * 1024 # 100GB
+  size   = 150 * 1024 * 1024 * 1024 # 150GB
 }
 
-# Create additional ultra-fast disks
+# Create additional ultra-fast disks for workers only
 resource "libvirt_volume" "vm_ultra_disk" {
-  count  = var.vm_count
-  name   = "talos-ultra-${count.index + 1}.qcow2"
+  count  = length([for k, v in var.nodes : k if v.machine_type == "worker"])
+  name   = "talos-ultra-worker-${count.index + 1}.qcow2"
   pool   = var.ultra_pool_name
   format = "qcow2"
-  size   = 500 * 1024 * 1024 * 1024 # 100GB
+  size   = 500 * 1024 * 1024 * 1024 # 500GB
 }
 
-# Create VMs
-resource "libvirt_domain" "talos_vm" {
-  count  = var.vm_count
-  name   = "talos-vm-${count.index + 1}"
+# Create Controlplane VMs (OS disk only)
+resource "libvirt_domain" "talos_controlplane" {
+  for_each = { for k, v in var.nodes : k => v if v.machine_type == "controlplane" }
+  
+  name   = replace(each.key, "-", "-vm-")
   memory = var.vm_memory
   vcpu   = var.vm_vcpu
 
@@ -85,31 +86,19 @@ resource "libvirt_domain" "talos_vm" {
   }
 
   # Kubernetes network interface
-  # Ip is reserved by my router
   network_interface {
     bridge = "vlan100-talos"
-    mac        = "52:54:00:10:01:0${count.index + 1}"
+    mac    = "52:54:00:10:01:01"  # Fixed MAC for controlplane
   }
 
   # Ingress interface on vlan200 
-  # Ip is set in config patches 
   network_interface {
     bridge = "vlan200-gateway"
   }
 
-  # OS disk (ultra-fast)
+  # OS disk only for controlplane
   disk {
-    volume_id = libvirt_volume.os_disk[count.index].id
-  }
-
-  # Local-nvme disk
-  disk {
-    volume_id = libvirt_volume.vm_local_disk[count.index].id
-  }
-
-  # Ultra-fast disk
-  disk {
-    volume_id = libvirt_volume.vm_ultra_disk[count.index].id
+    volume_id = libvirt_volume.os_disk[0].id
   }
 
   # CD-ROM with Talos ISO
@@ -133,14 +122,91 @@ resource "libvirt_domain" "talos_vm" {
   depends_on = [null_resource.download_talos_iso]
 }
 
-# Create snapshots of VMs after initial creation
-resource "null_resource" "vm_snapshots" {
-  count = var.vm_count
+# Create Worker VMs (OS + storage disks)
+resource "libvirt_domain" "talos_worker" {
+  count = length([for k, v in var.nodes : k if v.machine_type == "worker"])
+  
+  name   = "talos-vm-worker-${count.index + 1}"
+  memory = var.vm_memory
+  vcpu   = var.vm_vcpu
+
+  # CPU configuration - use host CPU features
+  cpu {
+    mode = "host-passthrough"
+  }
+
+  # Boot configuration - boot from Hard disk and fallback to CD-ROM
+  boot_device {
+    dev = ["hd", "cdrom"]
+  }
+
+  # Kubernetes network interface
+  network_interface {
+    bridge = "vlan100-talos"
+    mac    = "52:54:00:10:01:0${count.index + 2}"  # Workers get .02, .03
+  }
+
+  # Ingress interface on vlan200 
+  network_interface {
+    bridge = "vlan200-gateway"
+  }
+
+  # OS disk (ultra-fast)
+  disk {
+    volume_id = libvirt_volume.os_disk[count.index + 1].id
+  }
+
+  # Ultra-fast disk for storage
+  disk {
+    volume_id = libvirt_volume.vm_ultra_disk[count.index].id
+  }
+
+  # Local-nvme disk for storage
+  disk {
+    volume_id = libvirt_volume.vm_local_disk[count.index].id
+  }
+
+  # CD-ROM with Talos ISO
+  disk {
+    file = "${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso"
+  }
+
+  # Console access
+  console {
+    type        = "pty"
+    target_port = "0"
+    target_type = "serial"
+  }
+
+  graphics {
+    type        = "spice"
+    listen_type = "address"
+    autoport    = true
+  }
+
+  depends_on = [null_resource.download_talos_iso]
+}
+
+# Create snapshots of controlplane VMs after initial creation
+resource "null_resource" "controlplane_snapshots" {
+  for_each = { for k, v in var.nodes : k => v if v.machine_type == "controlplane" }
 
   # Create snapshot after VM is created
   provisioner "local-exec" {
-    command = "ssh hyper 'sudo virsh snapshot-create-as talos-vm-${count.index + 1} initial-snapshot \"Initial snapshot after VM creation\"'"
+    command = "ssh hyper 'sudo virsh snapshot-create-as ${replace(each.key, "-", "-vm-")} initial-snapshot \"Initial snapshot after VM creation\"'"
   }
 
-  depends_on = [libvirt_domain.talos_vm]
+  depends_on = [libvirt_domain.talos_controlplane]
+}
+
+# Create snapshots of worker VMs after initial creation
+resource "null_resource" "worker_snapshots" {
+  count = length([for k, v in var.nodes : k if v.machine_type == "worker"])
+
+  # Create snapshot after VM is created
+  provisioner "local-exec" {
+    command = "ssh hyper 'sudo virsh snapshot-create-as talos-vm-worker-${count.index + 1} initial-snapshot \"Initial snapshot after VM creation\"'"
+  }
+
+  depends_on = [libvirt_domain.talos_worker]
 }

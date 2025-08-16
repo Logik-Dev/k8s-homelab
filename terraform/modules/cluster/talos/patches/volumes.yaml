@@ -1,7 +1,7 @@
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
-name: longhorn
+name: longhorn-local
 provisioning:
   diskSelector:
     match: disk.dev_path == '/dev/vdc'
@@ -10,7 +10,7 @@ provisioning:
 ---
 apiVersion: v1alpha1
 kind: UserVolumeConfig
-name: longhorn2
+name: longhorn-ultra
 provisioning:
   diskSelector:
     match: disk.dev_path == '/dev/vdb'

@@ -7,16 +7,16 @@ locals {
       machine_type  = "controlplane"
       hostname      = "talos1"
     }
-    "talos-cp-2" = {
+    "talos-worker-1" = {
       node_ip       = "10.0.100.102"
       vlan200_ip    = "10.0.200.102"
-      machine_type  = "controlplane"
+      machine_type  = "worker"
       hostname      = "talos2"
     }
-    "talos-cp-3" = {
+    "talos-worker-2" = {
       node_ip       = "10.0.100.103"
       vlan200_ip    = "10.0.200.103"
-      machine_type  = "controlplane"
+      machine_type  = "worker"
       hostname      = "talos3"
     }
   }

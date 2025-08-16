@@ -1,11 +1,17 @@
 output "vm_ids" {
   description = "IDs of created VMs"
-  value       = libvirt_domain.talos_vm[*].id
+  value       = concat(
+    [for vm in libvirt_domain.talos_controlplane : vm.id],
+    [for vm in libvirt_domain.talos_worker : vm.id]
+  )
 }
 
 output "vm_names" {
   description = "Names of created VMs" 
-  value       = libvirt_domain.talos_vm[*].name
+  value       = concat(
+    [for vm in libvirt_domain.talos_controlplane : vm.name],
+    [for vm in libvirt_domain.talos_worker : vm.name]
+  )
 }
 
 output "schematic_id" {
