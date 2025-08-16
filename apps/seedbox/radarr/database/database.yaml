@@ -4,7 +4,7 @@ metadata:
   name: radarr-db
   namespace: seedbox
 spec:
-  instances: 3
+  instances: 2
   bootstrap:
     recovery:
       owner: radarr
