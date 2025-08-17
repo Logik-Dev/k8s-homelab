@@ -5,7 +5,7 @@ metadata:
     namespace: authentik
 type: Opaque
 stringData:
-    AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:jQIp7fBNOFHtF+9TgV8=,iv:anTifXNVVlvLECAJOQXdOtRO69RWFvMumxS5lBIXIfA=,tag:j+WLVIWdmtpO4nGoG65KUQ==,type:str]
+    AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:t4/HIyVR8+VGT2ALft7SJoU=,iv:6LHrNGnsbl9WIeNLMeWcxMIhXWmE6rWKygWZhqfVHZI=,tag:XELSWOd8IO/Mm1v2wf7f+Q==,type:str]
     AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:mXxC7DOBl9ZLKYiHofgiCcsVoa/nRtHhH/mhKim3RXU=,iv:7NIGGBxunpSYrCZnqFCevsyNSV4C+N175uDWVxe4ii8=,tag:Y+VG13E8kGW96jrX6lVy6w==,type:str]
 sops:
     age:
@@ -18,8 +18,8 @@ sops:
             MGxOSXRtMVdZa1dtTVY1aEQ4TmczUUEK/mMaOK8AJYaIy6Nj2xWOlpgvF2PEDaT6
             Np10Pve+6sZN+cZBuosJ0Sm7riqotWq8RX+AQNq0t9akJCHQTRA1dQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-08-17T15:03:07Z"
-    mac: ENC[AES256_GCM,data:o5gyb54xGbgPBz7JsFqgmFkpnkAhNV4XZ/nbN0E/Wxfkk413rq+sa6y4X/tLSVmtsPKLEGA2AYuruqESfEKWay44Ksf9P9+K8WPQmghJXF+mAL+DQw5dpUdeiUCGhzRfNi1ggb1qut4AoUCehRhcJUUWQ/5wOhjdLgCVmsF1P2U=,iv:bmwAVl8RsQMY0HZAlpB2mSfP7HzGaoLbqhfW6Kwc/oU=,tag:W7uaT+0DcgbB/c6BTGeamQ==,type:str]
+    lastmodified: "2025-08-17T15:27:24Z"
+    mac: ENC[AES256_GCM,data:zO8PvNj3hb7Vg0aT7x+qDXXAlwIAGCd1HZt4VMT35YQUlxfRF/2Fx489g4wlNd6HDld3e5YZuohOTL+deDKtNJbszjG4pac9GMKMq2clqeOjsQGdxa2jo76u5qu1zQufAbetcZkJxL+0etacPahurmHX6H/keYTQu5G4OUa2Jls=,iv:Z55Pqd+axuhm3S4LghdjWg3xo85wM/4PEqI2jSXVtn8=,tag:lp17nJr1rKXaWmbt9+OeMw==,type:str]
     pgp:
         - created_at: "2025-08-17T09:16:56Z"
           enc: |-
