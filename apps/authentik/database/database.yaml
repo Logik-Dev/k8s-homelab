@@ -10,7 +10,7 @@ spec:
       owner: authentik
       database: authentik
       secret:
-        name: authentik-db-secrets.yaml
+        name: authentik-db-secrets
   storage:
     storageClass: longhorn-no-replicas
     size: 10Gi
