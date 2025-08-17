@@ -4,9 +4,7 @@ metadata:
   name: sonarr
   namespace: seedbox
 data:
-  # AUTH MUST BE DISABLED ON FIRST INIT
-  SONARR__AUTH__REQUIRED: Enabled
-  SONARR__AUTH__METHOD: Forms
+  SONARR__AUTH__METHOD: External
   SONARR__POSTGRES__HOST: sonarr-db-rw
   SONARR__POSTGRES__PORT: "5432"
   SONARR__POSTGRES__USER: sonarr
