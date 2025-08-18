@@ -15,5 +15,5 @@ spec:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: ak-outpost-sonarr
+    - name: ak-outpost-main
       port: 9000
