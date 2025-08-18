@@ -2,7 +2,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: radarr
-  namespace: seedbox
+  namespace: authentik
 spec:
   parentRefs:
   - name: vlan200-gateway
@@ -15,5 +15,5 @@ spec:
         type: PathPrefix
         value: /
     backendRefs:
-    - name: radarr
+    - name: ak-outpost-radarr
       port: 80
