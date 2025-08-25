@@ -135,5 +135,5 @@ resource "talos_cluster_kubeconfig" "kubeconfig" {
 data "talos_client_configuration" "client_config" {
   cluster_name         = var.cluster_name
   client_configuration = talos_machine_secrets.cluster_secrets.client_configuration
-  endpoints            = [for node in var.nodes : node.node_ip]
+  endpoints            = [for k, v in var.nodes : v.node_ip if v.machine_type == "controlplane"]
 }

@@ -34,7 +34,7 @@ terraform {
 
 # Configure the Libvirt Provider
 provider "libvirt" {
-  uri = "qemu+ssh://logikdev@hyper/system"
+  uri = "qemu+ssh://logikdev@192.168.10.100/system"
 }
 
 # Configure the Talos Provider

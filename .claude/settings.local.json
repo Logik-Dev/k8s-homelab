@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kubectl get:*)",
+      "Bash(tofu state mv 'module.cluster.libvirt_domain.talos_vm[0]' 'module.cluster.module.vms.libvirt_domain.talos_vm[0]')",
+      "Bash(tofu init:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}

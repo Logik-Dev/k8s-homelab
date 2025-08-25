@@ -5,6 +5,8 @@ data "talos_image_factory_extensions_versions" "cluster_extensions" {
     names = [
       "i915-ucode",
       "iscsi-tools",
+      "nonfree-kmod-nvidia-lts",
+      "nvidia-container-toolkit-lts",
       "qemu-guest-agent",
       "util-linux-tools"
     ]
@@ -184,7 +186,67 @@ resource "libvirt_domain" "talos_worker" {
     autoport    = true
   }
 
+
   depends_on = [null_resource.download_talos_iso]
+}
+
+# Attach GPU to first worker via SSH
+resource "null_resource" "attach_gpu_ssh" {
+  # Only attach GPU to first worker
+  count = 1
+
+  # Trigger on VM changes or when GPU files change
+  triggers = {
+    worker_vm_id = libvirt_domain.talos_worker[0].id
+    gpu_config   = filemd5("${path.module}/../../../gpu-devices.xml")
+    audio_config = filemd5("${path.module}/../../../gpu-audio.xml")
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      # Copy GPU XML files to hypervisor
+      scp ${path.module}/../../../gpu-devices.xml logikdev@192.168.10.100:/tmp/
+      scp ${path.module}/../../../gpu-audio.xml logikdev@192.168.10.100:/tmp/
+      
+      # Check if GPU is already attached to avoid duplicate attachment
+      if ! ssh logikdev@192.168.10.100 "sudo virsh dumpxml talos-vm-worker-1 | grep -q 'domain.*0x0000.*bus.*0x01.*slot.*0x00.*function.*0'"; then
+        echo "Attaching GPU to talos-vm-worker-1..."
+        # Attach GPU main device
+        ssh logikdev@192.168.10.100 "sudo virsh attach-device talos-vm-worker-1 /tmp/gpu-devices.xml --persistent"
+        # Attach GPU audio device  
+        ssh logikdev@192.168.10.100 "sudo virsh attach-device talos-vm-worker-1 /tmp/gpu-audio.xml --persistent"
+        echo "GPU attached successfully!"
+      else
+        echo "GPU already attached to talos-vm-worker-1"
+      fi
+      
+      # Clean up temp files
+      ssh logikdev@192.168.10.100 "rm -f /tmp/gpu-devices.xml /tmp/gpu-audio.xml"
+    EOT
+  }
+
+  depends_on = [libvirt_domain.talos_worker]
+}
+
+# Apply NVIDIA configuration to first worker via talosctl
+resource "null_resource" "apply_nvidia_config" {
+  count = 1
+
+  triggers = {
+    worker_vm_id = libvirt_domain.talos_worker[0].id
+    nvidia_patch = filemd5("${path.module}/../talos/patches/nvidia.yaml")
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      # Apply NVIDIA patch via talosctl directly
+      talosctl patch machineconfig --nodes 10.0.100.102 --patch @${path.module}/../talos/patches/nvidia.yaml --talosconfig ../talosconfig
+      
+      echo "NVIDIA configuration applied to talos-worker-1"
+    EOT
+  }
+
+  depends_on = [libvirt_domain.talos_worker, null_resource.attach_gpu_ssh]
 }
 
 # Create snapshots of controlplane VMs after initial creation
