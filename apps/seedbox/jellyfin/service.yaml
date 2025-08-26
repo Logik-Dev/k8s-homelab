@@ -4,6 +4,8 @@ metadata:
   name: jellyfin
   namespace: seedbox
 spec:
+  selector:
+    app: jellyfin
   ports:
   - name: http
     port: 80

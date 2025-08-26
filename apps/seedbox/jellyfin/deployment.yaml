@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: seedbox
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      runtimeClassName: nvidia
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - name: jellyfin
+        image: jellyfin/jellyfin:10.10.3
+        ports:
+        - name: http
+          containerPort: 8096
+          protocol: TCP
+        env:
+        - name: TZ
+          value: "Europe/Paris"
+        - name: JELLYFIN_PublishedServerUrl
+          value: "https://jellyfin.logikdev.fr"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8096
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8096
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        volumeMounts:
+        - name: config-storage
+          mountPath: /config
+        - name: cache-storage
+          mountPath: /cache
+        - name: media-storage
+          mountPath: /movies
+          subPath: movies
+        - name: media-storage
+          mountPath: /series
+          subPath: series
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+            nvidia.com/gpu: 1
+      volumes:
+      - name: config-storage
+        persistentVolumeClaim:
+          claimName: jellyfin-longhorn
+      - name: cache-storage
+        emptyDir:
+          sizeLimit: 10Gi
+      - name: media-storage
+        persistentVolumeClaim:
+          claimName: media-storage
