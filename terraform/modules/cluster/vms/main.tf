@@ -1,42 +1,19 @@
-# Get extensions versions for Talos Image Factory
-data "talos_image_factory_extensions_versions" "cluster_extensions" {
-  talos_version = var.talos_version
-  filters = {
-    names = [
-      "i915-ucode",
-      "iscsi-tools",
-      "nonfree-kmod-nvidia-lts",
-      "nvidia-container-toolkit-lts",
-      "qemu-guest-agent",
-      "util-linux-tools"
-    ]
-  }
-}
-
-# Create Image Factory schematic with system extensions
-resource "talos_image_factory_schematic" "cluster_schematic" {
-  schematic = yamlencode(
-    {
-      customization = {
-        systemExtensions = {
-          officialExtensions = data.talos_image_factory_extensions_versions.cluster_extensions.extensions_info.*.name
-        }
-      }
-    }
-  )
+# Use pre-generated schematic ID for NVIDIA LTS extensions
+locals {
+  schematic_id = "4c313cba828073b7b89670484ec1ec5c619325c0b9ceebfafd0545fc29b5b668"
 }
 
 # Download Talos ISO from Image Factory using generated schematic
 resource "null_resource" "download_talos_iso" {
   triggers = {
     talos_version = var.talos_version
-    schematic_id  = talos_image_factory_schematic.cluster_schematic.id
+    schematic_id  = local.schematic_id
   }
 
   provisioner "local-exec" {
     command = <<-EOT
       ssh hyper "sudo mkdir -p ${var.iso_storage_path}"
-      ssh hyper "sudo wget -O ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso https://factory.talos.dev/image/${talos_image_factory_schematic.cluster_schematic.id}/${var.talos_version}/metal-amd64.iso"
+      ssh hyper "sudo wget -O ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso https://factory.talos.dev/image/${local.schematic_id}/${var.talos_version}/metal-amd64.iso"
       ssh hyper "sudo chmod 644 ${var.iso_storage_path}/talos-${var.talos_version}-metal-amd64.iso"
     EOT
   }

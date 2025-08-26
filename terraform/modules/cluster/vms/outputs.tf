@@ -15,6 +15,6 @@ output "vm_names" {
 }
 
 output "schematic_id" {
-  description = "Generated Talos Image Factory schematic ID"
-  value       = talos_image_factory_schematic.cluster_schematic.id
+  description = "Talos Image Factory schematic ID"
+  value       = local.schematic_id
 }
