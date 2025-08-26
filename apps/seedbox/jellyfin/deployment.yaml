@@ -18,6 +18,8 @@ spec:
       runtimeClassName: nvidia
       securityContext:
         runAsNonRoot: true
+        fsGroup: 991
+        fsGroupChangePolicy: "OnRootMismatch"
       containers:
       - name: jellyfin
         image: jellyfin/jellyfin:10.10.3
