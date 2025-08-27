@@ -15,3 +15,12 @@ spec:
       interval: 15m
   values:
     runtimeClassName: nvidia
+    config:
+      map:
+        config: |
+          version: v1
+          sharing:
+            timeSlicing:
+              resources:
+              - name: nvidia.com/gpu
+                replicas: 10
