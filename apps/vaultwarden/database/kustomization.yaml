@@ -5,4 +5,4 @@ resources:
   - minio-store.yaml
   - secrets.yaml
   - database.yaml
-#  - backup.yaml
+  - backup.yaml
