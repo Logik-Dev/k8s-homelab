@@ -34,7 +34,7 @@ resource "libvirt_volume" "vm_local_disk" {
   name   = "talos-local-worker-${count.index + 1}.qcow2"
   pool   = "local-pool"
   format = "qcow2"
-  size   = 150 * 1024 * 1024 * 1024 # 150GB
+  size   = 300 * 1024 * 1024 * 1024 # 300GB
 }
 
 # Create additional ultra-fast disks for workers only
@@ -43,7 +43,7 @@ resource "libvirt_volume" "vm_ultra_disk" {
   name   = "talos-ultra-worker-${count.index + 1}.qcow2"
   pool   = var.ultra_pool_name
   format = "qcow2"
-  size   = 500 * 1024 * 1024 * 1024 # 500GB
+  size   = 800 * 1024 * 1024 * 1024 # 800GB
 }
 
 # Create Controlplane VMs (OS disk only)
