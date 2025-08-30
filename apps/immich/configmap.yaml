@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich
+  namespace: immich
+data:
+  TZ: "Europe/Paris"
+  DB_HOSTNAME: "immich-db-rw.immich.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_DATABASE_NAME: "immich"
+  DB_USERNAME: "immich"
+  REDIS_HOSTNAME: "redis-master.redis.svc.cluster.local"
+  REDIS_PORT: "6379"
+  IMMICH_MACHINE_LEARNING_URL: "http://immich-machine-learning"
+
