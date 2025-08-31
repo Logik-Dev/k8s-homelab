@@ -9,3 +9,5 @@ data:
   MACHINE_LEARNING_WORKERS: "1"
   # Fix matplotlib permissions
   MPLCONFIGDIR: "/cache/matplotlib"
+  # Hugging Face cache directory
+  HF_HOME: "/cache/huggingface"

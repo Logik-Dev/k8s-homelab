@@ -26,8 +26,9 @@ spec:
             - -c
             - |
               mkdir -p /cache/matplotlib
+              mkdir -p /cache/huggingface
               chown -R 1000:991 /cache
-              chmod -R 755 /cache
+              chmod -R 775 /cache
           volumeMounts:
             - name: model-cache
               mountPath: /cache
