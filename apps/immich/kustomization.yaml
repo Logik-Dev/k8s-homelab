@@ -4,6 +4,7 @@ resources:
   - namespace.yaml
   - database
   - configmap.yaml
+  - configmap-ml.yaml
   - pvc.yaml
   - deployment.yaml
   - deployment-ml.yaml

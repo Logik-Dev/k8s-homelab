@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich-ml
+  namespace: immich
+data:
+  TZ: Europe/Paris
+  MACHINE_LEARNING_DEVICE_IDS: "0"
+  MACHINE_LEARNING_WORKERS: "1"
