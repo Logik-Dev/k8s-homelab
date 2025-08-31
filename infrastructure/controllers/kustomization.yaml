@@ -6,3 +6,4 @@ resources:
   - nvidia
   - storage
   - reflector
+  - multus
