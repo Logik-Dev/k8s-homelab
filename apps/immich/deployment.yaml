@@ -42,6 +42,10 @@ spec:
           volumeMounts:
             - name: immich-longhorn
               mountPath: /data
+              subPath: immich
+            - name: immich-longhorn
+              mountPath: /imports
+              subPath: imports
           resources:
             requests:
               memory: "256M"
