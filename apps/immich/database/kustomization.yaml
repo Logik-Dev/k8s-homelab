@@ -5,3 +5,4 @@ resources:
   - database.yaml
   - minio-creds.yaml
   - minio-store.yaml
+  - backup.yaml
