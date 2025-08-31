@@ -7,3 +7,5 @@ data:
   TZ: Europe/Paris
   MACHINE_LEARNING_DEVICE_IDS: "0"
   MACHINE_LEARNING_WORKERS: "1"
+  # Fix matplotlib permissions
+  MPLCONFIGDIR: "/cache/matplotlib"
