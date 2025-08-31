@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - secrets.yaml
   - database.yaml
+  - minio-creds.yaml
+  - minio-store.yaml

@@ -17,6 +17,12 @@ spec:
   backup:
     volumeSnapshot:
       className: longhorn
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: immich-store
+        serverName: immich-1
 ---
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
