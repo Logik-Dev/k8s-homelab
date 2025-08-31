@@ -5,7 +5,8 @@ resources:
   - database
   - configmap.yaml
   - configmap-ml.yaml
-  - pvc.yaml
+  - pvc-imports.yaml
+  - pvc-upload.yaml
   - pvc-ml.yaml
   - deployment.yaml
   - deployment-ml.yaml

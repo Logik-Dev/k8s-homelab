@@ -20,7 +20,7 @@ spec:
         fsGroup: 991
       containers:
         - name: immich-server
-          image: ghcr.io/immich-app/immich-server:v1.140.0
+          image: ghcr.io/immich-app/immich-server:v1.140.1
           ports:
             - name: http
               containerPort: 2283
@@ -40,12 +40,10 @@ spec:
                   name: redis-auth
                   key: password
           volumeMounts:
-            - name: immich-longhorn
+            - name: immich-upload
               mountPath: /data
-              subPath: immich
-            - name: immich-longhorn
+            - name: immich-imports
               mountPath: /imports
-              subPath: imports
           resources:
             requests:
               memory: "256M"
@@ -55,6 +53,9 @@ spec:
               cpu: "2"
               nvidia.com/gpu: 1
       volumes:
-        - name: immich-longhorn
+        - name: immich-upload
           persistentVolumeClaim:
-            claimName: immich-longhorn
+            claimName: immich-upload
+        - name: immich-imports
+          persistentVolumeClaim:
+            claimName: immich-imports

@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: immich-longhorn
+  name: immich-imports
   namespace: immich
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: longhorn-no-replicas
   resources:
     requests:
-      storage: 800Gi
+      storage: 400Gi
