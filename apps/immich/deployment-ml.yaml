@@ -18,22 +18,6 @@ spec:
         runAsUser: 1000
         runAsGroup: 991
         fsGroup: 991
-      initContainers:
-        - name: fix-permissions
-          image: alpine:latest
-          command:
-            - /bin/sh
-            - -c
-            - |
-              mkdir -p /cache/matplotlib
-              mkdir -p /cache/huggingface
-              chown -R 1000:991 /cache
-              chmod -R 775 /cache
-          volumeMounts:
-            - name: model-cache
-              mountPath: /cache
-          securityContext:
-            runAsUser: 0
       containers:
         - name: immich-machine-learning
           image: ghcr.io/immich-app/immich-machine-learning:v1.140.0-cuda
@@ -52,10 +36,10 @@ spec:
               memory: "256M"
               cpu: "100m"
             limits:
-              memory: "2Gi"
+              memory: "8Gi"
               cpu: "2"
               nvidia.com/gpu: 1
       volumes:
         - name: model-cache
-          emptyDir:
-            sizeLimit: 50Gi
+          persistentVolumeClaim:
+            claimName: immich-ml-longhorn

@@ -6,6 +6,7 @@ resources:
   - configmap.yaml
   - configmap-ml.yaml
   - pvc.yaml
+  - pvc-ml.yaml
   - deployment.yaml
   - deployment-ml.yaml
   - service.yaml
