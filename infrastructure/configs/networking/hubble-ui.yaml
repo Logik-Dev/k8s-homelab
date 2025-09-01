@@ -4,19 +4,18 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: hubble-ui
-  namespace: kube-system
+  namespace: authentik
 spec:
   parentRefs:
-  - name: vlan200-gateway
-    namespace: networking
+    - name: vlan200-gateway
+      namespace: networking
   hostnames:
-  - "hubble.logikdev.fr"
+    - hubble.logikdev.fr
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: hubble-ui
-      port: 80
-      weight: 100
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: ak-outpost-main
+          port: 9000
