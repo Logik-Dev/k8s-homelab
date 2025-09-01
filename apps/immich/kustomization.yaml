@@ -13,3 +13,4 @@ resources:
   - service.yaml
   - service-ml.yaml
   - httproute.yaml
+  - photos-backup.yaml

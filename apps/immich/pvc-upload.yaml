@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: immich-upload
   namespace: immich
+  labels:
+    recurring-job.longhorn.io/source: "enabled"
+    recurring-job-group.longhorn.io/photos: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
