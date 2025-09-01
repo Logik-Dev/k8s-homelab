@@ -81,6 +81,7 @@ resource "talos_machine_configuration_apply" "worker" {
     file("${path.module}/patches/metrics-server.yaml"),
     file("${path.module}/patches/gateway-api-crds.yaml"),
     file("${path.module}/patches/volumes.yaml"),
+    file("${path.module}/patches/nvidia.yaml"),
 
     # define hostname and second ip
     yamlencode({
