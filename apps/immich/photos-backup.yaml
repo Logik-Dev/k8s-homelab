@@ -4,7 +4,7 @@ metadata:
   name: photos-backup
   namespace: longhorn-system
 spec:
-  cron: "35 19 * * *"
+  cron: "43 17 * * *"
   task: "backup"
   groups:
     - photos
