@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: immich-imports
   namespace: immich
+  labels:
+    recurring-job.longhorn.io/source: "enabled"
+    recurring-job-group.longhorn.io/imports: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce

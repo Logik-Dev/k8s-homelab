@@ -4,9 +4,22 @@ metadata:
   name: photos-backup
   namespace: longhorn-system
 spec:
-  cron: "13 20 * * *"
+  cron: "13 20 * * *" # Every day
   task: "backup"
   groups:
     - photos
   retain: 2
+  concurrency: 1
+---
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: imports-backup
+  namespace: longhorn-system
+spec:
+  cron: "13 23 1 * *" # On first day of month
+  task: "backup"
+  groups:
+    - imports
+  retain: 1
   concurrency: 1
