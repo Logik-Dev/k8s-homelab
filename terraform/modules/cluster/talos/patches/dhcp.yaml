@@ -6,4 +6,3 @@ machine:
         dhcp: true
         dhcpOptions:
           routeMetric: 100
-

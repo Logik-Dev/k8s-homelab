@@ -129,6 +129,11 @@ resource "libvirt_domain" "talos_worker" {
   network_interface {
     bridge = "vlan200-gateway"
   }
+ 
+  # IoT interface
+  network_interface {
+    bridge = "vlan21-iot"
+  }
 
   # OS disk (ultra-fast)
   disk {
