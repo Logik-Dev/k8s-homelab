@@ -53,6 +53,10 @@ l2announcements:
 # Network devices
 devices: "eth+"
 
+# CNI configuration for Multus compatibility
+cni:
+  exclusive: false
+
 # Hubble observability
 hubble:
   enabled: true
