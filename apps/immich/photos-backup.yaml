@@ -17,7 +17,7 @@ metadata:
   name: imports-backup
   namespace: longhorn-system
 spec:
-  cron: "13 23 1 * *" # On first day of month
+  cron: "42 20 2 * *" # On second day of month
   task: "backup"
   groups:
     - imports
