@@ -35,7 +35,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
     file("${path.module}/patches/vip.yaml"),
     file("${path.module}/patches/gateway-api-crds.yaml"),
 
-    # define hostname and second ip
+    # define hostname
     yamlencode({
       machine = {
         install = {
@@ -43,19 +43,6 @@ resource "talos_machine_configuration_apply" "controlplane" {
         }
         network = {
           hostname = each.value.hostname
-          interfaces = [
-            {
-              interface = "eth1"
-              addresses = ["${each.value.vlan200_ip}/24"]
-              routes = [
-                {
-                  network = "0.0.0.0/0"
-                  gateway = "10.0.200.1"
-                  metric  = 200
-                }
-              ]
-            }
-          ]
         }
       }
     })
@@ -91,19 +78,6 @@ resource "talos_machine_configuration_apply" "worker" {
         }
         network = {
           hostname = each.value.hostname
-          interfaces = [
-            {
-              interface = "eth1"
-              addresses = ["${each.value.vlan200_ip}/24"]
-              routes = [
-                {
-                  network = "0.0.0.0/0"
-                  gateway = "10.0.200.1"
-                  metric  = 200
-                }
-              ]
-            }
-          ]
         }
       }
     })

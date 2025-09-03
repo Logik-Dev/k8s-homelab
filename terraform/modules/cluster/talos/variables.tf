@@ -16,10 +16,9 @@ variable "talos_version" {
 variable "nodes" {
   description = "Node configuration"
   type = map(object({
-    node_ip       = string
-    vlan200_ip    = string
-    machine_type  = string
-    hostname      = string
+    node_ip      = string
+    machine_type = string
+    hostname     = string
   }))
 }
 
