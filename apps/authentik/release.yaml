@@ -16,10 +16,10 @@ spec:
   values:
     authentik:
       secret_key: file:///authentik-secrets/secret_key
-      
+
       error_reporting:
         enabled: false
-      
+
       postgresql:
         host: authentik-db-rw
         user: file:///postgres-creds/username
@@ -36,19 +36,19 @@ spec:
         use_ssl: true
         username: file:///authentik-secrets/smtp_username
         password: file:///authentik-secrets/smtp_password
-    
+
     postgresql:
       enabled: false
-    
+
     redis:
       enabled: false
-    
+
     server:
       route:
         main:
           enabled: true
           hostnames:
-            - authentik.logikdev.fr
+            - authentik.s3.home.logikdev.fr
           parentRefs:
             - name: vlan200-gateway
               namespace: networking
@@ -91,7 +91,7 @@ spec:
         limits:
           cpu: 500m
           memory: 1Gi
-          
+
       volumes:
         - name: postgres-creds
           secret:
