@@ -48,7 +48,7 @@ spec:
         main:
           enabled: true
           hostnames:
-            - authentik.s3.home.logikdev.fr
+            - authentik.k8s.home.logikdev.fr
           parentRefs:
             - name: vlan200-gateway
               namespace: networking
