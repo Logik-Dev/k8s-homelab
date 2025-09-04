@@ -2,22 +2,22 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-    name: vaultwarden-store
-    namespace: vaultwarden
+  name: vaultwarden-store
+  namespace: vaultwarden
 spec:
-    retentionPolicy: "90d"
-    configuration:
-        destinationPath: s3://vaultwarden-db
-        endpointURL: https://s3.logikdev.fr 
-        s3Credentials:
-            accessKeyId:
-                name: vaultwarden-minio-credentials
-                key: AWS_ACCESS_KEY_ID
-            secretAccessKey:
-                name: vaultwarden-minio-credentials
-                key: AWS_SECRET_ACCESS_KEY
-        wal:
-          compression: gzip
-          maxParallel: 8
-        data:
-          compression: gzip
+  retentionPolicy: "90d"
+  configuration:
+    destinationPath: s3://vaultwarden-db
+    endpointURL: https://s3.hyper.home.logikdev.fr
+    s3Credentials:
+      accessKeyId:
+        name: vaultwarden-minio-credentials
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: vaultwarden-minio-credentials
+        key: AWS_SECRET_ACCESS_KEY
+    wal:
+      compression: gzip
+      maxParallel: 8
+    data:
+      compression: gzip

@@ -8,7 +8,7 @@ spec:
   retentionPolicy: "90d"
   configuration:
     destinationPath: s3://immich-db
-    endpointURL: https://s3.logikdev.fr
+    endpointURL: https://s3.hyper.home.logikdev.fr
     s3Credentials:
       accessKeyId:
         name: immich-minio-credentials
