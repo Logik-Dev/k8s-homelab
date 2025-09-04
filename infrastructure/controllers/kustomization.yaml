@@ -6,5 +6,5 @@ resources:
   - nvidia
   - storage
   - reflector
-  - multus
+  #- multus
   - tailscale
