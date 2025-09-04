@@ -5,15 +5,15 @@ metadata:
   namespace: vaultwarden
 spec:
   parentRefs:
-  - name: vlan200-gateway
-    namespace: networking
+    - name: vlan200-gateway
+      namespace: networking
   hostnames:
-  - "vaultwarden.logikdev.fr"
+    - "vaultwarden.k8s.home.logikdev.fr"
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: vaultwarden
-      port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: vaultwarden
+          port: 80

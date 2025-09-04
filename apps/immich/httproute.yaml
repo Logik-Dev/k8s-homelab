@@ -5,15 +5,16 @@ metadata:
   namespace: immich
 spec:
   parentRefs:
-  - name: vlan200-gateway
-    namespace: networking
+    - name: vlan200-gateway
+      namespace: networking
   hostnames:
-  - immich.logikdev.fr
+    - immich.k8s.home.logikdev.fr
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: immich-server
-      port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: immich-server
+          port: 80
+

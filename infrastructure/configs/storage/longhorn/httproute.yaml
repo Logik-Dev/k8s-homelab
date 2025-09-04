@@ -8,7 +8,7 @@ spec:
     - name: vlan200-gateway
       namespace: networking
   hostnames:
-    - longhorn.logikdev.fr
+    - longhorn.k8s.home.logikdev.fr
   rules:
     - matches:
         - path:

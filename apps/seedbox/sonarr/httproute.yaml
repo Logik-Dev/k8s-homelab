@@ -5,15 +5,15 @@ metadata:
   namespace: authentik
 spec:
   parentRefs:
-  - name: vlan200-gateway
-    namespace: networking
+    - name: vlan200-gateway
+      namespace: networking
   hostnames:
-  - sonarr.logikdev.fr
+    - sonarr.k8s.home.logikdev.fr
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-    - name: ak-outpost-main
-      port: 9000
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: ak-outpost-main
+          port: 9000

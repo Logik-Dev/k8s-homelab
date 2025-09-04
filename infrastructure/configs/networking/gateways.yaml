@@ -9,17 +9,17 @@ metadata:
 spec:
   gatewayClassName: cilium
   addresses:
-  - type: IPAddress
-    value: 10.0.200.100
+    - type: IPAddress
+      value: 10.0.200.100
   listeners:
-  - name: https
-    hostname: "*.logikdev.fr"
-    port: 443
-    protocol: HTTPS
-    tls:
-      mode: Terminate
-      certificateRefs:
-        - name: ingress-tls
-    allowedRoutes:
-      namespaces:
-        from: All
+    - name: https
+      hostname: "*.k8s.home.logikdev.fr"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: ingress-tls
+      allowedRoutes:
+        namespaces:
+          from: All
