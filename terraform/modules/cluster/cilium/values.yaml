@@ -45,7 +45,6 @@ gatewayAPI:
 externalIPs:
   enabled: true
 
-
 # L2 announcements for LoadBalancer services
 l2announcements:
   enabled: true
@@ -56,6 +55,10 @@ devices: "eth+"
 # CNI configuration for Multus compatibility
 cni:
   exclusive: false
+
+# Needed for tailscale expose
+socketLB:
+  hostNamespaceOnly: true
 
 # Hubble observability
 hubble:
