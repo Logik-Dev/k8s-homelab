@@ -13,4 +13,5 @@ resources:
   - service.yaml
   - service-ml.yaml
   - httproute.yaml
+  - tailscale.yaml
   - photos-backup.yaml
