@@ -6,7 +6,7 @@ metadata:
   namespace: vaultwarden
 spec:
   immediate: true
-  schedule: "@weekly" 
+  schedule: "@weekly"
   backupOwnerReference: self
   cluster:
     name: vaultwarden-db
@@ -21,10 +21,8 @@ metadata:
   namespace: vaultwarden
 spec:
   immediate: true
-  schedule: "@weekly" 
+  schedule: "@daily"
   backupOwnerReference: self
   cluster:
     name: vaultwarden-db
   method: volumeSnapshot
-
-
