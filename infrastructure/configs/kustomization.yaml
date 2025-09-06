@@ -6,3 +6,4 @@ resources:
   - networking
   - nvidia
   - storage
+  - multus

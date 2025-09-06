@@ -16,6 +16,27 @@ patches:
       spec:
         template:
           spec:
+            initContainers:
+              - name: install-multus-binary
+                image: ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick
+                command: ["/entrypoint.sh"]
+                args: ["--multus-conf-file=auto", "--multus-autoconfig-dir=/host/etc/cni/net.d", "--cni-version=0.3.1"]
+                resources:
+                  requests:
+                    cpu: "10m"
+                    memory: "15Mi"
+                securityContext:
+                  privileged: true
+                volumeMounts:
+                  - name: cni
+                    mountPath: /host/etc/cni/net.d
+                  - name: cnibin
+                    mountPath: /host/opt/cni/bin
+                  - name: multus-cfg
+                    mountPath: /tmp/multus-conf
+                  - name: host-run-netns
+                    mountPath: /var/run/netns
+                    mountPropagation: HostToContainer
             volumes:
               - name: host-run-netns
                 hostPath:
