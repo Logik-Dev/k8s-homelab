@@ -7,6 +7,6 @@ machine:
         dhcpOptions:
           routeMetric: 100
       - interface: eth1
-        ignore: true
+        dhcp: false
       - interface: eth2
-        ignore: true
+        dhcp: false
