@@ -8,3 +8,4 @@ resources:
   - seedbox
   - vaultwarden
   - immich
+  - homeassistant
