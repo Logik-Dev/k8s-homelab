@@ -9,14 +9,6 @@ terraform {
       source  = "siderolabs/talos"
       version = "0.9.0-alpha.0"
     }
-    helm = {
-      source  = "hashicorp/helm"
-      version = "3.0.2"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "2.38.0"
-    }
   }
 
   backend "s3" {
@@ -24,7 +16,7 @@ terraform {
     key    = "k8s-homelab/terraform.tfstate"
     region = "us-east-1"
 
-    endpoint                    = "https://s3.logikdev.fr"
+    endpoint                    = "https://s3.hyper.home.logikdev.fr"
     use_path_style              = true
     skip_credentials_validation = true
     skip_metadata_api_check     = true
@@ -39,19 +31,6 @@ provider "libvirt" {
 
 # Configure the Talos Provider
 provider "talos" {}
-
-# Configure Kubernetes Provider
-provider "kubernetes" {
-  config_path = "../kubeconfig"
-}
-
-# Configure Helm Provider  
-provider "helm" {
-  kubernetes = {
-    config_path = "../kubeconfig"
-  }
-}
-
 
 # Storage pools module
 module "pools" {
