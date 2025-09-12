@@ -1,0 +1,16 @@
+# bare-metal.yaml
+customization:
+  extraKernelArgs:
+    - net.ifnames=0
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/tailscale
+      - siderolabs/intel-ucode
+      - siderolabs/qemu-guest-agent
+      - siderolabs/util-linux-tools
+      - siderolabs/iscsi-tools
+%{ for ext in extensions ~}
+      - ${ext}
+%{ endfor ~}
+
+

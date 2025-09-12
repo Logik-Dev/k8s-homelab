@@ -1,63 +1,81 @@
-terraform {
-  required_version = ">= 1.0"
-  required_providers {
-    libvirt = {
-      source  = "dmacvicar/libvirt"
-      version = "0.8.3"
-    }
-    talos = {
-      source  = "siderolabs/talos"
-      version = "0.9.0-alpha.0"
-    }
-  }
-
-  backend "s3" {
-    bucket = "opentofu"
-    key    = "k8s-homelab/terraform.tfstate"
-    region = "us-east-1"
-
-    endpoint                    = "https://s3.hyper.home.logikdev.fr"
-    use_path_style              = true
-    skip_credentials_validation = true
-    skip_metadata_api_check     = true
-    skip_region_validation      = true
-  }
+locals {
+  kubeconfig_path  = "../${var.env}-kubeconfig"
+  talosconfig_path = "../${var.env}-talosconfig"
 }
-
-# Configure the Libvirt Provider
-provider "libvirt" {
-  uri = "qemu+ssh://logikdev@192.168.10.100/system"
-}
-
-# Configure the Talos Provider
-provider "talos" {}
-
-# Storage pools module
+# Create all pools
 module "pools" {
-  source = "./modules/pools"
+  source = "./libvirt/pools"
+  pools  = var.pools
 }
 
-# Cluster module
-module "cluster" {
-  source = "./modules/cluster"
-
-  ultra_pool_name  = module.pools.ultra_pool_name
-  vm_count         = 3
-  vm_memory        = 16384 # 16 GiB
-  vm_vcpu          = 4
-  cluster_name     = "talos"
-  cluster_endpoint = "https://10.0.100.100:6443"
+# Create all networks
+module "nat_networks" {
+  source       = "./libvirt/networks"
+  nat_networks = var.nat_networks
 }
 
-# Output kubeconfig
-resource "local_file" "kubeconfig" {
-  content  = module.cluster.kubeconfig_raw
-  filename = "../kubeconfig"
+# Create all instances volumes
+module "volumes" {
+  for_each       = var.instances
+  source         = "./libvirt/volumes"
+  volumes        = each.value.volumes
+  pools          = module.pools.pools
+  volumes_prefix = each.key
 }
 
-# Output talosconfig
-resource "local_file" "talosconfig" {
-  content  = module.cluster.talos_config
-  filename = "../talosconfig"
+# Construct Talos Image
+module "image" {
+  for_each   = var.instances
+  source     = "./talos/image"
+  pool       = module.pools.pools[var.image_pool].name
+  extensions = each.value.extensions
+}
+
+# Create each instance
+module "instances" {
+  for_each = var.instances
+  source   = "./libvirt/instance"
+  name     = each.key
+  cpus     = each.value.cpus
+  memory   = each.value.memory
+  disks    = module.volumes[each.key].volumes
+  cdrom_id = module.image[each.key].volume_id
+  networks = { for k, v in each.value.networks : module.nat_networks.nat_networks[k].id => { ipv4 = v.ipv4 } }
+}
+
+# Install talos
+module "install" {
+  source           = "./talos/install"
+  env              = var.env
+  ips              = module.instances
+  machines         = var.instances
+  cluster_endpoint = var.cluster_endpoint
+  common_patches   = var.common_patches
+  installer_urls   = module.image
+  talosconfig_path = local.talosconfig_path
+  kubeconfig_path  = local.kubeconfig_path
+}
+
+# Deploy Gateway API CRDs
+module "gateway_api_crds" {
+  source        = "./gateway-api"
+  manifest_urls = var.gateway_api_crds
+  kubeconfig    = module.install.kubeconfig
+}
+
+# Deploy cilium
+module "cilium" {
+  source           = "./cilium-cni"
+  env              = var.env
+  gateway_api_deps = module.gateway_api_crds.state
+  kubeconfig_path  = local.kubeconfig_path
+}
+
+# Bootstrap FluxCD
+module "flux" {
+  source      = "./flux"
+  cilium_deps = module.cilium
+  kubeconfig  = module.install.kubeconfig
+  env         = var.env
 }
 
