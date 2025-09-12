@@ -31,9 +31,11 @@ provider "flux" {
   }
 
   git = {
-    url      = "https://github.com/Logik-Dev/k8s-homelab.git"
-    branch   = "dev"
-    owner    = "Logik-Dev"
-    password = provider::sops::file("${path.module}/secrets.yaml").data.github-token
+    url    = "https://github.com/Logik-Dev/k8s-homelab.git"
+    branch = "dev"
+    http = {
+      username = "flux"
+      password = provider::sops::file("${path.module}/secrets.yaml").data.github-token
+    }
   }
 }
