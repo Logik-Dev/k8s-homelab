@@ -8,3 +8,5 @@ resources:
   - ../../base/tailscale
   - secrets.yaml
 nameSuffix: -prod
+patches:
+  - path: repo-name.yaml
