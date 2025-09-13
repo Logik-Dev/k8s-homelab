@@ -5,4 +5,4 @@ resources:
   - namespace.yaml
   - minio-creds.yaml
   - repository.yaml
-  - release.yaml  # longhorn-base (without monitoring)
+  - release.yaml

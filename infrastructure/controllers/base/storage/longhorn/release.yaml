@@ -16,13 +16,8 @@ spec:
       interval: 12h
   values:
     defaultSettings:
-      defaultDataPath: "/var/mnt/longhorn-ultra"
+      defaultDataPath: "/var/mnt/longhorn"
     defaultBackupStore:
       backupTarget: s3://longhorn@us-east-1/
       backupTargetCredentialSecret: longhorn-minio-credentials
       pollInterval: 180
-    # Disable monitoring for initial deployment to avoid circular dependency
-    metrics:
-      serviceMonitor:
-        enabled: false
-      

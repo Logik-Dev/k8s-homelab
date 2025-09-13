@@ -19,13 +19,6 @@ spec:
         namespace: cnpg-system
       interval: 12h
   values:
-    # monitoring:
-    #   podMonitorEnabled: true
-    #   podMonitorAdditionalLabels:
-    #     release: kube-prometheus-stack
-    #   grafanaDashboard:
-    #     create: true
-    #     namespace: monitoring
     resources:
       limits:
         cpu: 200m
@@ -41,4 +34,4 @@ spec:
         type: RuntimeDefault
       capabilities:
         drop:
-        - "ALL"
+          - "ALL"
