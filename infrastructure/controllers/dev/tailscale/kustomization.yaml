@@ -7,6 +7,4 @@ metadata:
 resources:
   - ../../base/tailscale
   - secrets.yaml
-nameSuffix: -dev
-patches:
-  - path: repo-name.yaml
+  - helmrelease.yaml
