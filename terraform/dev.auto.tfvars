@@ -1,39 +1,35 @@
 env = "dev"
 
-libvirt_uri = "qemu:///system"
-
 pools = {
-  local-pool = "/var/lib/libvirt/pools/local-pool"
+  local = "/mnt/local/libvirt-pool"
+  ultra = "/mnt/ultra/libvirt-pool"
 }
 
-nat_networks = {
-  "k8s" = {
-    subnets = ["10.0.99.0/24"]
-  }
-}
-
-cluster_endpoint = "10.0.99.101"
+cluster_endpoint = "10.0.100.99"
 
 instances = {
-  talos1 = {
-    type       = "controlplane"
-    cpus       = 4
-    memory     = "4096"
-    patches    = ["allow-controlplane-workloads"]
-    extensions = []
-    networks = {
-      k8s = {
-        ipv4 = "10.0.99.101"
-      }
-    }
+  talos1-dev = {
+    type    = "controlplane"
+    cpus    = 4
+    memory  = "16384"
+    ip      = "10.0.100.99"
+    patches = ["allow-controlplane-workloads"]
+    extensions = [
+      "siderolabs/i915"
+    ],
+    bridges = {
+      vlan100-talos   = "52:54:00:10:00:99",
+      vlan200-gateway = null
+      vlan21-iot      = null
+    },
     volumes = {
-      os = {
-        size = 30
-        pool = "local-pool"
-      }
-      data = {
+      vda-os = {
         size = 50
-        pool = "local-pool"
+        pool = "local"
+      }
+      vdb-longhorn = {
+        size = 300
+        pool = "local",
       }
     }
   }

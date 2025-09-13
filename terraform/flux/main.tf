@@ -7,7 +7,7 @@ locals {
   )
 }
 resource "kubectl_manifest" "namespace" {
-  depends_on = [var.cilium_deps]
+  depends_on = [var.cluster_ready]
   yaml_body  = file("${path.module}/namespace.yaml")
 }
 

@@ -1,0 +1,8 @@
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: longhorn
+provisioning:
+  diskSelector:
+    match: disk.dev_path == '/dev/vdb'
+  minSize: 100GB
+  grow: true

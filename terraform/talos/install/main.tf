@@ -1,13 +1,13 @@
 
 locals {
   cluster_name = "talos-${var.env}"
-  nodes        = [for v in var.ips : v.ip]
-  tailscale = templatefile(
-    "${path.module}/patches/tailscale.tftpl",
+  nodes        = [for v in var.machines : v.ip]
+  tailscale = templatefile("${path.module}/patches/tailscale.tftpl",
     {
       tskey = provider::sops::file("${path.module}/secrets.yaml").data["tailscale-${var.env}"]
     }
   )
+  disable_cni_patch = var.cni_disabled ? [file("${path.module}/patches/no-cni.yaml")] : []
 }
 
 # Generate secrets
@@ -18,15 +18,25 @@ resource "talos_machine_secrets" "this" {
 # Apply configs on each node
 resource "talos_machine_configuration_apply" "this" {
   for_each                    = var.machines
+  depends_on                  = [var.instances_ids]
   client_configuration        = talos_machine_secrets.this.client_configuration
   machine_configuration_input = data.talos_machine_configuration.this[each.key].machine_configuration
-  node                        = var.ips[each.key].ip
+  node                        = var.machines[each.key].ip
   config_patches = concat(
+    # Enable/Disable CNI
+    local.disable_cni_patch,
+    # Tailscale
     [local.tailscale],
+    # Common patches
     [for patch in var.common_patches : file("${path.module}/patches/${patch}.yaml")],
+    # Extra patches
     [for patch in each.value.patches : file("${path.module}/patches/${patch}.yaml")],
+    # Hostname and installer
     [yamlencode({
       machine = {
+        network = {
+          hostname = each.key
+        }
         install = {
           image = var.installer_urls[each.key].installer_url
         }

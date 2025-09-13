@@ -11,6 +11,6 @@ variable "kubeconfig" {
   })
 }
 
-variable "cilium_deps" {
-  type = map(any)
+variable "cluster_ready" {
+  type = string
 }

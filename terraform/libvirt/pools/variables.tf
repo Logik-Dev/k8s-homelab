@@ -1,3 +1,7 @@
-variable "pools" {
-  type = map(string)
+variable "name" {
+  type = string
+}
+
+variable "path" {
+  type = string
 }

@@ -7,14 +7,18 @@ variable "talos_version" {
   default = "1.11"
 }
 
-variable "ips" {
+variable "instances_ids" {
   type = map(object({
-    ip = string
+    id = string
   }))
 }
 
 variable "cluster_endpoint" {
   type = string
+}
+
+variable "cni_disabled" {
+  type = bool
 }
 
 variable "common_patches" {
@@ -25,6 +29,7 @@ variable "machines" {
   type = map(object({
     type    = string
     patches = list(string)
+    ip      = string
   }))
 }
 

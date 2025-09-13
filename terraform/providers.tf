@@ -48,14 +48,21 @@ provider "http" {}
 
 provider "local" {}
 
-provider "helm" {}
-
 provider "null" {}
 
-provider "kubectl" {}
+provider "kubectl" {
+  client_certificate     = base64decode(module.talos_install.kubeconfig.client_certificate)
+  cluster_ca_certificate = base64decode(module.talos_install.kubeconfig.ca_certificate)
+  client_key             = base64decode(module.talos_install.kubeconfig.client_key)
+  host                   = module.talos_install.kubeconfig.host
+  load_config_file       = false
+}
 
+provider "helm" {
+  kubernetes = {
+    config_path = local.kubeconfig_path
+  }
+}
 provider "flux" {}
 
-provider "sops" {
-
-}
+provider "sops" {}

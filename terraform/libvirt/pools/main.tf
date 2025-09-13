@@ -1,8 +1,7 @@
 resource "libvirt_pool" "this" {
-  for_each = var.pools
-  name     = each.key
+  name     =  var.name
   type     = "dir"
   target {
-    path = each.value
+    path = var.path
   }
 }

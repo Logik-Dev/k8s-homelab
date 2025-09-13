@@ -1,8 +1,10 @@
 variable "env" {
   type = string
 }
+
 variable "libvirt_uri" {
-  type = string
+  type    = string
+  default = "qemu+ssh://logikdev@192.168.10.100/system"
 }
 
 variable "pools" {
@@ -11,14 +13,7 @@ variable "pools" {
 
 variable "image_pool" {
   type    = string
-  default = "local-pool"
-}
-
-variable "nat_networks" {
-  type = map(object({
-    subnets = list(string)
-  }))
-  default = {}
+  default = "local"
 }
 
 variable "cluster_endpoint" {
@@ -27,7 +22,12 @@ variable "cluster_endpoint" {
 
 variable "common_patches" {
   type    = list(string)
-  default = ["install", "cni", "metrics-server", "kubelet-certificates-rotation"]
+  default = ["install", "metrics-server", "kubelet-certificates-rotation", "raw-volumes", "interfaces"]
+}
+
+variable "cilium_enabled" {
+  type    = bool
+  default = false
 }
 
 variable "instances" {
@@ -35,11 +35,10 @@ variable "instances" {
     type       = string
     cpus       = number
     memory     = string
+    ip         = string
     patches    = list(string)
     extensions = list(string)
-    networks = map(object({
-      ipv4 = string
-    }))
+    bridges    = map(string)
     volumes = map(object({
       size = number
       pool = string

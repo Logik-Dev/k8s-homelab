@@ -11,11 +11,10 @@ resource "libvirt_domain" "this" {
 
   disk {
     file = var.cdrom_id
-    scsi = false
   }
 
   dynamic "disk" {
-    for_each = var.disks
+    for_each = var.volumes
     content {
       volume_id = disk.value.id
     }
@@ -24,16 +23,8 @@ resource "libvirt_domain" "this" {
   dynamic "network_interface" {
     for_each = var.bridges
     content {
-      bridge = network_interface.value
-    }
-  }
-
-  dynamic "network_interface" {
-    for_each = var.networks
-    content {
-      network_id     = network_interface.key
-      addresses      = [network_interface.value.ipv4]
-      wait_for_lease = true
+      bridge = network_interface.key
+      mac    = network_interface.value
     }
   }
 

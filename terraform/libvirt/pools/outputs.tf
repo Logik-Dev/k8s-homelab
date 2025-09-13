@@ -1,3 +1,3 @@
-output "pools" {
-  value = libvirt_pool.this
+output "name" {
+  value = libvirt_pool.this.name
 }

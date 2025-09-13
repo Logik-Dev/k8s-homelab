@@ -1,4 +1,4 @@
-variable "disks" {
+variable "volumes" {
   type = map(object({
     id = string
   }))
@@ -23,8 +23,8 @@ variable "cdrom_id" {
 }
 
 variable "bridges" {
-  type    = list(string)
-  default = []
+  type    = map(string)
+  default = {}
 }
 
 variable "networks" {
