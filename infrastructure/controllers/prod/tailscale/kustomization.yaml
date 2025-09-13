@@ -7,4 +7,5 @@ metadata:
 resources:
   - ../../base/tailscale
   - secrets.yaml
-  - helmrelease.yaml
+patches:
+  - path: operator-name.yaml
