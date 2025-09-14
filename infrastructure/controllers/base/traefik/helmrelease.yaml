@@ -13,12 +13,10 @@ spec:
         name: traefik
       interval: 24h
   values:
+    gateway:
+      enabled: false
     ingressClass:
       enabled: false
-    gateway:
-      enabled: true
-    gatewayClass:
-      enabled: true
     providers:
       kubernetesCRD:
         allowCrossNamespace: true
