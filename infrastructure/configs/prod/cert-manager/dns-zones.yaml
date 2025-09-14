@@ -2,4 +2,4 @@
   path: /spec/acme/solvers/0/selector
   value:
     dnsZones:
-      - "prod.k8s.home.logikdev.fr"
+      - "k8sp.home.logikdev.fr"
