@@ -1,0 +1,3 @@
+- op: add
+  path: /spec/listeners/0/hostname
+  value: "*.dev.k8s.home.logikdev.fr"
