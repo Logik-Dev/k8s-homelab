@@ -1,23 +1,5 @@
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-production
-  namespace: cert-manager
-spec:
-  acme:
-    solvers:
-      - selector:
-          dnsZones:
-            - "dev.k8s.home.logikdev.fr"
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-staging
-  namespace: cert-manager
-spec:
-  acme:
-    solvers:
-      - selector:
-          dnsZones:
-            - "dev.k8s.home.logikdev.fr"
+- op: add
+  path: spec/acme/solvers/0/selector
+  value:
+    dnsZones:
+      - "dev.k8s.home.logikdev.fr"

@@ -5,4 +5,8 @@ namespace: cert-manager
 resources:
   - ../../base/cert-manager
 patches:
-  - path: dns-zones.yaml
+  - target:
+      group: cert-manager.io
+      version: "v1"
+      kind: ClusterIssuer
+    path: dns-zones.yaml
