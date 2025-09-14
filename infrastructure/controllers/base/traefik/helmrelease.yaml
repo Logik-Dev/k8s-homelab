@@ -25,3 +25,6 @@ spec:
       kubernetesGateway:
         enabled: true
         experimentalChannel: false
+    ports:
+      websecure:
+        port: 443
