@@ -6,4 +6,5 @@ resources:
   - ../base/metallb
   - ../base/reflector
   - ../base/storage
+  - ../base/traefik
   - tailscale
