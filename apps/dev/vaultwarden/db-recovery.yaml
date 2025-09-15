@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: vaultwarden-db
+spec:
+  bootstrap:
+    recovery:
+      volumeSnapshots:
+        storage:
+          name: snapshot-341f252d-f9e9-476f-ba1f-ac210fa11faa
+          kind: VolumeSnapshot
+          apiGroup: snapshot.storage.k8s.io
