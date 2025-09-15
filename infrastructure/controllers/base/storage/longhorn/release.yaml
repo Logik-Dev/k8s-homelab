@@ -17,7 +17,15 @@ spec:
   values:
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
+      storageOverProvisioningPercentage: 200
     defaultBackupStore:
       backupTarget: s3://longhorn@us-east-1/
       backupTargetCredentialSecret: longhorn-minio-credentials
       pollInterval: 180
+    csi:
+      attacherReplicaCount: 1
+      provisionerReplicaCount: 1
+      resizerReplicaCount: 1
+      snapshotterReplicaCount: 1
+    persistence:
+      defaultClassReplicaCount: 1
