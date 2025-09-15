@@ -6,6 +6,6 @@ resources:
   - ../base/cert-manager
   - ../base/metallb
   - ../base/reflector
-  #- ../base/storage
+  - ../base/storage
   - ../base/traefik
   - tailscale
