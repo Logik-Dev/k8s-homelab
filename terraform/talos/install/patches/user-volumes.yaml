@@ -1,5 +1,5 @@
 apiVersion: v1alpha1
-kind: RawVolumeConfig
+kind: UserVolumeConfig
 name: longhorn
 provisioning:
   diskSelector:

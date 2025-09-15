@@ -22,7 +22,7 @@ variable "cluster_endpoint" {
 
 variable "common_patches" {
   type    = list(string)
-  default = ["install", "metrics-server", "kubelet-certificates-rotation", "raw-volumes", "interfaces"]
+  default = ["install", "metrics-server", "kubelet-certificates-rotation", "user-volumes", "interfaces"]
 }
 
 variable "cilium_enabled" {

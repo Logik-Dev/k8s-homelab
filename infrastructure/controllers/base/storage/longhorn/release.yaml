@@ -16,7 +16,7 @@ spec:
       interval: 12h
   values:
     defaultSettings:
-      defaultDataPath: "/dev/vdb1"
+      defaultDataPath: "/var/mnt/longhorn"
     defaultBackupStore:
       backupTarget: s3://longhorn@us-east-1/
       backupTargetCredentialSecret: longhorn-minio-credentials
