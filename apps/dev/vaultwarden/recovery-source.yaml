@@ -1,0 +1,3 @@
+- op: add
+  path: /spec/externalClusters/0/plugin/parameters/serverName
+  value: vaultwarden-2

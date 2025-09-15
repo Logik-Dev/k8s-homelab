@@ -4,4 +4,4 @@ namespace: vaultwarden
 resources:
   - ../../base/vaultwarden
 patches:
-  - path: db-recovery.yaml
+  - path: recovery-source.yaml
