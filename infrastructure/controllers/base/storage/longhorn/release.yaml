@@ -31,3 +31,5 @@ spec:
       snapshotterReplicaCount: 1
     persistence:
       defaultClassReplicaCount: 1
+    longhornUI:
+      replicas: 1
