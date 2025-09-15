@@ -4,4 +4,9 @@ namespace: vaultwarden
 resources:
   - ../../base/vaultwarden
 patches:
-  - path: recovery-source.yaml
+  - target:
+      group: postgresql.cnpg.io
+      version: "v1"
+      kind: Cluster
+      name: vaultwarden-db
+    path: recovery-source.yaml
