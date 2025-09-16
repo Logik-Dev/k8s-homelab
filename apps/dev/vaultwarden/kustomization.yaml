@@ -9,6 +9,5 @@ patches:
   - path: database.yaml
 configMapGenerator:
   - name: vaultwarden-domain
-    behavior: replace
     literals:
       - DOMAIN=vaultwarden.kdev.home.logikdev.fr
