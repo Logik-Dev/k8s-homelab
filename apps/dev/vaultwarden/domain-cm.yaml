@@ -1,0 +1,8 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vaultwarden-domain
+  namespace: vaultwarden
+data:
+  DOMAIN: vaultwarden.kdev.home.logikdev.fr

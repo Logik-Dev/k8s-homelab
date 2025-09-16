@@ -3,13 +3,8 @@ kind: Kustomization
 namespace: vaultwarden
 resources:
   - ../../base/vaultwarden
+  - domain-cm.yaml
 patches:
   - path: httproute.yaml
   - path: tailscale.yaml
   - path: database.yaml
-configMapGenerator:
-  - name: vaultwarden-domain
-    literals:
-      - DOMAIN=vaultwarden.kdev.home.logikdev.fr
-    options:
-      disableNameSuffixHash: true
