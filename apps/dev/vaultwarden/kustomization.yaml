@@ -4,9 +4,10 @@ namespace: vaultwarden
 resources:
   - ../../base/vaultwarden
 patches:
-  - target:
-      group: postgresql.cnpg.io
-      version: "v1"
-      kind: Cluster
-      name: vaultwarden-db
-    path: recovery-source.yaml
+  - path: httproute.yaml
+  - path: tailscale.yaml
+  - path: database.yaml
+configMapGenerator:
+  - name: vaultwarden-domain
+    literals:
+      - DOMAIN=vaultwarden.kdev.home.logikdev.fr
