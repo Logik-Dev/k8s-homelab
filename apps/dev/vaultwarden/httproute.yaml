@@ -4,4 +4,4 @@ metadata:
   name: vaultwarden
 spec:
   hostnames:
-    - vaultwarden.kdev.home.logikdev.fr
+    - vaultwarden.k8sd.home.logikdev.fr

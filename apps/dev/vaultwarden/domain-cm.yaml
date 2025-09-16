@@ -4,4 +4,4 @@ kind: ConfigMap
 metadata:
   name: vaultwarden-domain
 data:
-  DOMAIN: https://vaultwarden.kdev.home.logikdev.fr
+  DOMAIN: https://vaultwarden.k8sd.home.logikdev.fr
