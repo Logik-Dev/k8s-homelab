@@ -11,3 +11,5 @@ configMapGenerator:
   - name: vaultwarden-domain
     literals:
       - DOMAIN=vaultwarden.kdev.home.logikdev.fr
+    options:
+      disableNameSuffixHash: true
