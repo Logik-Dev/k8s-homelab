@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    spec:
+      hostname: jellyfin
+      containers:
+        - name: jellyfin
+          image: lscr.io/linuxserver/jellyfin:10.10.7
+          ports:
+            - name: http
+              containerPort: 8096
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: seedbox
+            - configMapRef:
+                name: jellyfin-domain
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-storage
+              mountPath: /config
+            - name: cache-storage
+              mountPath: /cache
+            - name: media-storage
+              mountPath: /movies
+              subPath: movies
+            - name: media-storage
+              mountPath: /series
+              subPath: series
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "4Gi"
+              cpu: "2"
+      volumes:
+        - name: config-storage
+          persistentVolumeClaim:
+            claimName: jellyfin-longhorn
+        - name: cache-storage
+          emptyDir:
+            sizeLimit: 10Gi
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage

@@ -19,3 +19,10 @@ spec:
   storage:
     storageClass: longhorn
     size: 10Gi
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: vaultwarden-store
+          serverName: vaultwarden-2
