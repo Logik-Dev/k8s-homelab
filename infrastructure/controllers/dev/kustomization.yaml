@@ -5,6 +5,7 @@ resources:
   - https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.3.0/standard-install.yaml
   - ../base/cert-manager
   - ../base/metallb
+  - ../base/multus
   - ../base/reflector
   - ../base/storage
   - ../base/traefik
