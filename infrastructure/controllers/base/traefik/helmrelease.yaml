@@ -28,8 +28,3 @@ spec:
     ports:
       websecure:
         port: 443
-    logs:
-      general:
-        level: "DEBUG"
-      access:
-        enabled: true
