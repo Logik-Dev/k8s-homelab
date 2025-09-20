@@ -1,9 +1,9 @@
 - op: replace
   path: /spec/template/spec/containers/0/volumeMounts/6
   value:
-    - name: host-run-netns
-      hostPath:
-        path: /var/run/netns/
+    name: host-run-netns
+    hostPath:
+      path: /var/run/netns/
 - op: replace
   path: /spec/template/spec/initContainers/0/command
   value:
