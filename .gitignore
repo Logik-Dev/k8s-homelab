@@ -1,6 +1,10 @@
 # Kubernetes and Talos configs (contain secrets)
 kubeconfig
 talosconfig
+dev-talosconfig
+prod-talosconfig
+dev-kubeconfig
+prod-kubeconfig
 
 # Terraform files
 **/.terraform/

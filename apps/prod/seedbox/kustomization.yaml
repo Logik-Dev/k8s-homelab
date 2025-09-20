@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: seedbox
+resources:
+  - ../../base/seedbox/common
+  - ./jellyfin
+  - ./jellyseerr
+  - ./prowlarr
+  - ./namespace.yaml

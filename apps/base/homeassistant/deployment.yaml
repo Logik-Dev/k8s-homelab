@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: kube-system/macvlan-iot
+    spec:
+      containers:
+        - name: homeassistant
+          image: ghcr.io/home-assistant/home-assistant:stable
+          ports:
+            - containerPort: 8123
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: config-file
+              mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
+          env:
+            - name: TZ
+              value: "Europe/Paris"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+      volumes:
+        - name: config-file
+          configMap:
+            name: hass-config
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: homeassistant-config
