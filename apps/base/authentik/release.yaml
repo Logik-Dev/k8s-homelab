@@ -47,7 +47,7 @@ spec:
           enabled: true
           parentRefs:
             - name: vlan200-gateway
-              namespace: networking
+              namespace: traefik
 
       resources:
         requests:
