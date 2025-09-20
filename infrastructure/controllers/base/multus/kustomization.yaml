@@ -5,7 +5,8 @@ resources:
 patches:
   - path: ./talos-patch.yaml
     target:
-      kind: apps
+      kind: DaemonSet
+      group: apps
       version: v1
       name: kube-multus-ds
       namespace: kube-system
