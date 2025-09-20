@@ -2,16 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homeassistant
-  namespace: homeassistant
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: homeassistant
   template:
     metadata:
-      labels:
-        app: homeassistant
       annotations:
         k8s.v1.cni.cncf.io/networks: kube-system/macvlan-iot
     spec:
@@ -36,9 +30,6 @@ spec:
             limits:
               memory: "2Gi"
               cpu: "1000m"
-          securityContext:
-            privileged: false
-      hostNetwork: false
       volumes:
         - name: config-file
           configMap:
