@@ -3,4 +3,5 @@ kind: Kustomization
 namespace: seedbox
 resources:
   - ../../base/seedbox/common
-  - jellyfin
+  - ./jellyfin
+  - ./namespace.yaml
