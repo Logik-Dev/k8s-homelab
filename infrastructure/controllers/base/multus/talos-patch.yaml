@@ -1,16 +1,14 @@
 - op: replace
   path: /spec/template/spec/containers/0/volumeMounts/6
   value:
-    name: host-run-netns
-    hostPath:
-      path: /var/run/netns/
-- op: add
-  path: /spec/template/spec/initContainers
+    - name: host-run-netns
+      hostPath:
+        path: /var/run/netns/
+- op: replace
+  path: /spec/template/spec/initContainers/0/command
   value:
-    - name: install-multus-binary
-      command:
-        - "/usr/src/multus-cni/bin/install_multus"
-        - "-d"
-        - "/host/opt/cni/bin"
-        - "-t"
-        - "thick"
+    - "/usr/src/multus-cni/bin/install_multus"
+    - "-d"
+    - "/host/opt/cni/bin"
+    - "-t"
+    - "thick"
