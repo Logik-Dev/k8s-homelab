@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - cert-manager
   - metallb
-  - multus
+  - ../base/multus
   - nvidia
   - storage
   - traefik
