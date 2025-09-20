@@ -1,35 +1,35 @@
-# Hourly snapshot app group
+# Daily apps snapshot
 apiVersion: longhorn.io/v1beta2
 kind: RecurringJob
 metadata:
-  name: daily-app-snapshot
+  name: daily-apps-snapshot
   namespace: longhorn-system
 spec:
   cron: "0 3 * * *"
   task: snapshot
   retain: 7
   groups:
-    - app
-  labels:
-    group: apps
-    frequency: hourly
-    type: snapshot
-  concurrency: 5
----
-# Daily app backup
-apiVersion: longhorn.io/v1beta2
-kind: RecurringJob
-metadata:
-  name: weekly-app-backup
-  namespace: longhorn-system
-spec:
-  cron: "0 4 * * 1"      
-  task: backup
-  retain: 8
-  groups: 
-    - app
+    - apps
   labels:
     group: apps
     frequency: daily
+    type: snapshot
+  concurrency: 5
+---
+# Weekly apps backup
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: weekly-apps-backup
+  namespace: longhorn-system
+spec:
+  cron: "0 4 * * 1"
+  task: backup
+  retain: 8
+  groups:
+    - apps
+  labels:
+    group: apps
+    frequency: weekly
     type: backup
   concurrency: 1
