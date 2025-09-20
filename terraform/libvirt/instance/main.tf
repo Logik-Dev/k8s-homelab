@@ -31,5 +31,9 @@ resource "libvirt_domain" "this" {
   boot_device {
     dev = ["hd", "cdrom"]
   }
+
+  xml {
+    xslt = var.xml
+  }
 }
 

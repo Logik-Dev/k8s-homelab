@@ -11,7 +11,6 @@ module "storage_pools" {
   path     = each.value
 }
 
-
 # Create all instances volumes
 module "vms_volumes" {
   for_each       = var.instances
@@ -27,6 +26,7 @@ module "talos_image_volumes" {
   source     = "./talos/image"
   pool       = module.storage_pools[var.image_pool].name
   extensions = each.value.extensions
+  env        = var.env
 }
 
 # Create each vm
@@ -39,6 +39,7 @@ module "vms" {
   volumes  = module.vms_volumes[each.key].volumes
   cdrom_id = module.talos_image_volumes[each.key].volume_id
   bridges  = each.value.bridges
+  xml      = var.xml
 }
 
 # Install talos
@@ -53,24 +54,6 @@ module "talos_install" {
   talosconfig_path = local.talosconfig_path
   kubeconfig_path  = local.kubeconfig_path
   cni_disabled     = var.cilium_enabled
-}
-
-# Deploy Gateway API CRDs
-module "gateway_api_crds" {
-  count              = var.cilium_enabled ? 1 : 0
-  source             = "./gateway-api"
-  manifest_urls      = var.gateway_api_crds
-  kubeconfig         = module.talos_install.kubeconfig
-  wait_for_apiserver = module.talos_install.ready
-}
-
-# Deploy cilium
-module "cilium" {
-  count            = var.cilium_enabled ? 1 : 0
-  source           = "./cilium-cni"
-  env              = var.env
-  gateway_api_deps = module.gateway_api_crds[0].state
-  kubeconfig_path  = local.kubeconfig_path
 }
 
 # Bootstrap FluxCD

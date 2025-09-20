@@ -4,7 +4,7 @@ data "talos_image_factory_urls" "this" {
   platform      = "metal"
 }
 resource "libvirt_volume" "this" {
-  name   = "talos.iso"
+  name   = "talos-${var.env}.iso"
   pool   = var.pool
   source = data.talos_image_factory_urls.this.urls.iso
   format = "iso"

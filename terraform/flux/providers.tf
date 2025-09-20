@@ -32,7 +32,7 @@ provider "flux" {
 
   git = {
     url    = "https://github.com/Logik-Dev/k8s-homelab.git"
-    branch = "dev"
+    branch = var.env == "prod" ? "main" : var.env
     http = {
       username = "flux"
       password = provider::sops::file("${path.module}/secrets.yaml").data.github-token

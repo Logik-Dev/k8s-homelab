@@ -33,3 +33,9 @@ variable "networks" {
   }))
   default = {}
 }
+
+variable "xml" {
+  type        = string
+  description = "Additional XML configuration for libvirt domain"
+  default     = null
+}
