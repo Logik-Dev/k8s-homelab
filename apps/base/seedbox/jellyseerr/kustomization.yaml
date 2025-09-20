@@ -6,3 +6,5 @@ resources:
   - httproute.yaml
   - tailscale.yaml
   - pvc.yaml
+commonLabels:
+  app: jellyseerr

@@ -2,12 +2,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jellyseerr
-  namespace: seedbox
 spec:
   ingressClassName: tailscale
-  tls:
-    - hosts:
-        - jellyseerr
   rules:
     - http:
         paths:
