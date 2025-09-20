@@ -1,5 +1,5 @@
 - op: replace
-  path: /spec/template/spec/containers/0/volumeMounts/6
+  path: /spec/template/spec/containers/0/volumes/8
   value:
     name: host-run-netns
     hostPath:
