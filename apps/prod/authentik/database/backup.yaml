@@ -3,7 +3,6 @@ kind: ScheduledBackup
 metadata:
   name: authentik-weekly-backup
 spec:
-  immediate: true
   schedule: "@weekly"
   backupOwnerReference: self
   cluster:
