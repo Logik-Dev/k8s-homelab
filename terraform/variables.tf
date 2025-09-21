@@ -22,7 +22,15 @@ variable "cluster_endpoint" {
 
 variable "common_patches" {
   type    = list(string)
-  default = ["install", "metrics-server", "kubelet-certificates-rotation", "user-volumes", "interfaces", "load-balancer"]
+  default = [
+    "install", 
+    "metrics-server", 
+    "kubelet-certificates-rotation", 
+    "user-volumes", 
+    "interfaces", 
+    "load-balancer", 
+    "extra-manifests"
+  ]
 }
 
 variable "instances" {
