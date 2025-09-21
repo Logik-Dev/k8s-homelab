@@ -1,8 +1,8 @@
 env = "dev"
 
 pools = {
-  local = "/mnt/local/libvirt-pool"
-  ultra = "/mnt/ultra/libvirt-pool"
+  local-dev = "/mnt/local/libvirt-pool/dev"
+  ultra-dev = "/mnt/ultra/libvirt-pool/dev"
 }
 
 cluster_endpoint = "10.0.100.99"
@@ -25,11 +25,11 @@ instances = {
     volumes = {
       vda-os = {
         size = 50
-        pool = "local"
+        pool = "local-dev"
       }
       vdb-longhorn = {
         size = 300
-        pool = "local",
+        pool = "local-dev",
       }
     }
   }
