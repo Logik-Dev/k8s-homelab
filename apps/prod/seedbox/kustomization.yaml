@@ -4,6 +4,6 @@ namespace: seedbox
 resources:
   - ../../base/seedbox/common
   - ./jellyfin
-  - ./jellyseerr
-  - ./prowlarr
+  #- ./jellyseerr
+  #- ./prowlarr
   - ./namespace.yaml
