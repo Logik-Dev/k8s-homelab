@@ -19,6 +19,8 @@ spec:
     compatWithCPUManager: "false"
     migStrategy: none
     failOnInitError: "false"
+    gfd:
+      enabled: true
     config:
       map:
         config: |
