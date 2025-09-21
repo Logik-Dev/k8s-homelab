@@ -39,7 +39,7 @@ module "vms" {
   volumes  = module.vms_volumes[each.key].volumes
   cdrom_id = module.talos_image_volumes[each.key].volume_id
   bridges  = each.value.bridges
-  xml      = var.xml
+  xml      = each.value.xml
 }
 
 # Install talos
@@ -53,7 +53,7 @@ module "talos_install" {
   installer_urls   = module.talos_image_volumes
   talosconfig_path = local.talosconfig_path
   kubeconfig_path  = local.kubeconfig_path
-  cni_disabled     = var.cilium_enabled
+  cni_disabled     = false
 }
 
 # Bootstrap FluxCD
