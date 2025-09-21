@@ -13,7 +13,7 @@ variable "pools" {
 
 variable "image_pool" {
   type    = string
-  default = "local"
+  default = "local-dev"
 }
 
 variable "cluster_endpoint" {
@@ -39,6 +39,7 @@ variable "instances" {
     patches    = list(string)
     extensions = list(string)
     bridges    = map(string)
+    xml        = string
     volumes = map(object({
       size = number
       pool = string
@@ -46,8 +47,3 @@ variable "instances" {
   }))
 }
 
-variable "xml" {
-  type        = string
-  description = "Extra XML"
-  default     = null
-}

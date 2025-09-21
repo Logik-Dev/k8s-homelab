@@ -1,13 +1,13 @@
 env = "prod"
 
-libvirt_uri = "qemu+ssh://logikdev@hyper/system"
-
 pools = {
-  local-pool = "/mnt/local/libvirt-pool"
-  ultra-pool = "/mnt/ultra/libvirt-pool"
+  local-prod = "/mnt/local/libvirt-pool/prod"
+  ultra-prod = "/mnt/ultra/libvirt-pool/prod"
 }
 
 cluster_endpoint = "10.0.100.101"
+
+image_pool = "local-prod"
 
 instances = {
   talos1-prod = {
@@ -31,21 +31,40 @@ instances = {
     volumes = {
       vda-os = {
         size = 30
-        pool = "ultra-pool"
+        pool = "ultra-prod"
       }
       vdb-longhorn = {
         size = 900
-        pool = "ultra-pool"
+        pool = "ultra-prod"
       }
     }
-    xml = <<EOF
-    <hostdev mode='subsystem' type='pci' managed='yes'>
-      <source>
-        <address domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
-      </source>
-      <address type='pci' domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
-    </hostdev>
-    EOF
+    xml = <<EOT
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <!-- Identité : copie tout le XML existant -->
+  <xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <!-- Match sur le noeud <devices> et injecte le hostdev -->
+  <xsl:template match="devices">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+
+      <!-- Ici on insère le hostdev GPU -->
+      <hostdev mode="subsystem" type="pci" managed="yes">
+        <source>
+          <address domain="0x0000" bus="0x01" slot="0x00" function="0x0"/>
+        </source>
+      </hostdev>
+
+    </xsl:copy>
+  </xsl:template>
+</xsl:stylesheet>
+EOT
   }
 }
 
