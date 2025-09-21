@@ -4,6 +4,6 @@ resources:
   - ./authentik
   #- ./homeassistant
   - ../base/common
-  # - ./redis
+  - ./redis
   - ./seedbox
   # - ./vaultwarden
