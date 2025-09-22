@@ -6,14 +6,3 @@ metadata:
 spec:
   hostnames:
     - torrent.k8sp.home.logikdev.fr
-  parentRefs:
-    - name: vlan200-gateway
-      namespace: traefik
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: ak-outpost-main
-          port: 9000

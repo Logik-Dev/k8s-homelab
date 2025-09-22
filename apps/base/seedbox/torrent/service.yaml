@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: qbittorrent
+  namespace: seedbox
 spec:
   ports:
     - name: webui
