@@ -12,5 +12,12 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: ak-outpost-main
-          port: 9000
+        - name: qbittorrent
+          port: 80
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: traefik.io
+            kind: Middleware
+            name: authentik
+            namespace: authentik
