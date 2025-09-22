@@ -2,18 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qbittorrent
-  namespace: seedbox
 spec:
   strategy:
     type: Recreate
   replicas: 1
-  selector:
-    matchLabels:
-      app: qbittorrent
   template:
-    metadata:
-      labels:
-        app: qbittorrent
     spec:
       containers:
         - name: gluetun
@@ -21,7 +14,12 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
+                command:
+                  [
+                    "/bin/sh",
+                    "-c",
+                    "(ip rule del table 51820; ip -6 rule del table 51820) || true",
+                  ]
           securityContext:
             privileged: true
             capabilities:
