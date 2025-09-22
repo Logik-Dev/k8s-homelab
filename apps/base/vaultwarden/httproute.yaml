@@ -6,7 +6,6 @@ spec:
   parentRefs:
     - name: vlan200-gateway
       namespace: traefik
-      sectionName: websecure
   rules:
     - matches:
         - path:

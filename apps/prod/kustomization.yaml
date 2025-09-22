@@ -6,4 +6,4 @@ resources:
   - ../base/common
   - ./redis
   - ./seedbox
-  # - ./vaultwarden
+  - ./vaultwarden

@@ -3,9 +3,10 @@ kind: Kustomization
 namespace: vaultwarden
 resources:
   - ../../base/vaultwarden
-  - backup.yaml
-  - domain-cm.yaml
+  - ./backup.yaml
+  - ./domain-cm.yaml
+  - ./namespace.yaml
 patches:
-  - path: backup-target.yaml
-  - path: httproute.yaml
-  - path: tailscale.yaml
+  - path: ./backup-target.yaml
+  - path: ./httproute.yaml
+  - path: ./tailscale.yaml
