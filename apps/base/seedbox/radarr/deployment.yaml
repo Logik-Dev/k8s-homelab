@@ -2,77 +2,67 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: radarr
-  namespace: seedbox
 spec:
-  strategy:
-    type: Recreate
-  replicas: 1
-  selector:
-    matchLabels:
-      app: radarr
   template:
-    metadata:
-      labels:
-        app: radarr
     spec:
       containers:
-      - name: radarr
-        image: lscr.io/linuxserver/radarr:5.26.2
-        ports:
-        - name: http
-          containerPort: 7878
-          protocol: TCP
-        env:
-          - name: RADARR__POSTGRES__PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: radarr-db-secrets
-                key: password
-        envFrom:
-        - configMapRef:
-              name: seedbox
-        - configMapRef:
-              name: radarr
-        - secretRef:
-              name: radarr
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 7878
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 7878
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
-        volumeMounts:
-        - name: radarr-assets
-          mountPath: /config
-        - name: media-storage
-          mountPath: /mnt/storage/medias/movies
-          subPath: movies
-        - name: media-storage
-          mountPath: /mnt/storage/medias/downloads
-          subPath: downloads
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "1Gi"
-            cpu: "1"
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:5.26.2
+          ports:
+            - name: http
+              containerPort: 7878
+              protocol: TCP
+          env:
+            - name: RADARR__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: radarr-db-secrets
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: seedbox
+            - configMapRef:
+                name: radarr
+            - secretRef:
+                name: radarr
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 7878
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 7878
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: radarr-assets
+              mountPath: /config
+            - name: media-storage
+              mountPath: /mnt/storage/medias/movies
+              subPath: movies
+            - name: media-storage
+              mountPath: /mnt/storage/medias/downloads
+              subPath: downloads
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
       volumes:
-      - name: radarr-assets
-        persistentVolumeClaim:
-          claimName: radarr-assets
-      - name: media-storage
-        persistentVolumeClaim:
-          claimName: media-storage
+        - name: radarr-assets
+          persistentVolumeClaim:
+            claimName: radarr-assets
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage

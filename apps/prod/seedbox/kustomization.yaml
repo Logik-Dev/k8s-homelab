@@ -6,4 +6,5 @@ resources:
   - ./torrent
   #- ./jellyseerr
   #- ./prowlarr
+  - ./radarr
   - ./namespace.yaml
