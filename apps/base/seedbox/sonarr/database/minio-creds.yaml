@@ -2,7 +2,6 @@ apiVersion: v1
 kind: Secret
 metadata:
     name: sonarr-minio-credentials
-    namespace: seedbox
 type: Opaque
 stringData:
     AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:y5442Ysv+K2F0IfwwtI=,iv:vjn1wNpi2PeOeBOZMZ74uUnc/VjztUSvW5JJ1QuSbE0=,tag:CaoatOXuNC6AMkgbVqINWw==,type:str]
@@ -18,8 +17,8 @@ sops:
             SldSTEx5TG1wcllySjBpZ3MrWmVZTlkK6XerR7N+4ti1Ix9tTB7po0jrqhYCHmXV
             ZA6BdiWNNfiwdiq2xHTLuzp9pYSfs2wlFUw3Op8FrOo6mixnfSpajg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-08-14T14:43:33Z"
-    mac: ENC[AES256_GCM,data:K2TxSwp0pvN+3UUOfhnCXTrUzdVOjB2oweevAbyAEqQBLqsjFqqEKNnA+w4tTAa4MT/kjkFu/KFhtFRyp/otO2MPy6hQCVLtKFdfswyopceKOnk5041yb2YoiJA84pHHJ7ixjdhZiWA+pouiiDwSq99ot5H40PkRR5CCDtdI4dE=,iv:wepG3r7iFXtXUAuf5veJsTDGZ0axi2vQ7Y0GHLA3cqs=,tag:rL2fKL+u/dX8BV+ENbBgwA==,type:str]
+    lastmodified: "2025-09-23T19:39:52Z"
+    mac: ENC[AES256_GCM,data:K3K3Vd8LkBBK/MIktxWZ4W1oe6pxTRoUSo6RDZWCDZyYI1p+7GeGZp6lsLUsOfpGDBlFJEUDmjnOKzNWmBJIi5cyJm5W6kv9XIgZB+pZ7LLyyxjnf5prfgj1NS6w6fAk4sWkPCqDtjIE3GEjvE1aEqYmWdgSf2Wr+2ReLpfkF3k=,iv:YGoYiUHZaR4ae/AHd8oslkIRxjk59pGNcE5nHu0ut4A=,tag:JHpIG0mg5ujlDl1JT5LYWg==,type:str]
     pgp:
         - created_at: "2025-08-14T14:37:22Z"
           enc: |-

@@ -2,77 +2,67 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sonarr
-  namespace: seedbox
 spec:
-  strategy:
-    type: Recreate
-  replicas: 1
-  selector:
-    matchLabels:
-      app: sonarr
   template:
-    metadata:
-      labels:
-        app: sonarr
     spec:
       containers:
-      - name: sonarr
-        image: lscr.io/linuxserver/sonarr:4.0.14
-        ports:
-        - name: http
-          containerPort: 8989
-          protocol: TCP
-        env:
-          - name: SONARR__POSTGRES__PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: sonarr-db-secrets
-                key: password
-        envFrom:
-        - configMapRef:
-              name: seedbox
-        - configMapRef:
-              name: sonarr
-        - secretRef:
-              name: sonarr
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 8989
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8989
-          initialDelaySeconds: 15
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
-        volumeMounts:
-        - name: sonarr-assets
-          mountPath: /config
-        - name: media-storage
-          mountPath: /mnt/storage/medias/series
-          subPath: series
-        - name: media-storage
-          mountPath: /mnt/storage/medias/downloads
-          subPath: downloads
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "1Gi"
-            cpu: "1"
+        - name: sonarr
+          image: lscr.io/linuxserver/sonarr:4.0.14
+          ports:
+            - name: http
+              containerPort: 8989
+              protocol: TCP
+          env:
+            - name: SONARR__POSTGRES__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sonarr-db-secrets
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: seedbox
+            - configMapRef:
+                name: sonarr
+            - secretRef:
+                name: sonarr
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8989
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8989
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: sonarr-assets
+              mountPath: /config
+            - name: media-storage
+              mountPath: /mnt/storage/medias/series
+              subPath: series
+            - name: media-storage
+              mountPath: /mnt/storage/medias/downloads
+              subPath: downloads
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
       volumes:
-      - name: sonarr-assets
-        persistentVolumeClaim:
-          claimName: sonarr-assets
-      - name: media-storage
-        persistentVolumeClaim:
-          claimName: media-storage
+        - name: sonarr-assets
+          persistentVolumeClaim:
+            claimName: sonarr-assets
+        - name: media-storage
+          persistentVolumeClaim:
+            claimName: media-storage

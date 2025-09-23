@@ -6,9 +6,9 @@ metadata:
 spec:
   parentRefs:
     - name: vlan200-gateway
-      namespace: networking
+      namespace: traefik
   hostnames:
-    - sonarr.k8s.home.logikdev.fr
+    - sonarr.k8sp.home.logikdev.fr
   rules:
     - matches:
         - path:

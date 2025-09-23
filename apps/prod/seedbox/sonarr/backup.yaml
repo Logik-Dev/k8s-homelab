@@ -4,8 +4,7 @@ metadata:
   name: sonarr-daily-backup
   namespace: seedbox
 spec:
-  immediate: true
-  schedule: "0 0 0 * * *"  # At midnight
+  schedule: "0 0 0 * * *" # At midnight
   backupOwnerReference: self
   cluster:
     name: sonarr-db

@@ -3,7 +3,6 @@ apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
   name: sonarr-store
-  namespace: seedbox
 spec:
   retentionPolicy: "90d"
   configuration:
