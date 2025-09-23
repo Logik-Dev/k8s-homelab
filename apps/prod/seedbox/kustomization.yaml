@@ -4,7 +4,8 @@ resources:
   - ../../base/seedbox/common
   - ./jellyfin
   - ./torrent
-  #- ./jellyseerr
+  - ./jellyseerr
   - ./prowlarr
   - ./radarr
+  - ./sonarr
   - ./namespace.yaml
