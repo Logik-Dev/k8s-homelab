@@ -5,7 +5,7 @@ metadata:
 spec:
   parentRefs:
     - name: vlan200-gateway
-      namespace: networking
+      namespace: traefik
   rules:
     - matches:
         - path:
