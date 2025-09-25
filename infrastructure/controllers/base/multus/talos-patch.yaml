@@ -15,13 +15,13 @@
 - op: add
   path: /spec/template/spec/initContainers/1
   value:
-    - command:
-        - /install-cni.sh
-      image: ghcr.io/siderolabs/install-cni:v1.7.0 # adapt to your talos version
-      name: install-cni
-      securityContext:
-        privileged: true
-      volumeMounts:
-        - mountPath: /host/opt/cni/bin
-          mountPropagation: Bidirectional
-          name: cnibin
+    command:
+      - /install-cni.sh
+    image: ghcr.io/siderolabs/install-cni:v1.7.0 # adapt to your talos version
+    name: install-cni
+    securityContext:
+      privileged: true
+    volumeMounts:
+      - mountPath: /host/opt/cni/bin
+        mountPropagation: Bidirectional
+        name: cnibin
