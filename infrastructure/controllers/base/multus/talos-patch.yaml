@@ -13,7 +13,7 @@
     - "-t"
     - "thick"
 - op: add
-  path: /spec/template/spec/initContainers
+  path: /spec/template/spec/initContainers/1
   value:
     - command:
         - /install-cni.sh
