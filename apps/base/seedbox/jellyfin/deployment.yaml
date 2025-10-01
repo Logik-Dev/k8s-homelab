@@ -62,8 +62,8 @@ spec:
           persistentVolumeClaim:
             claimName: jellyfin-longhorn
         - name: cache-storage
-          emptyDir:
-            sizeLimit: 10Gi
+          persistentVolumeClaim:
+            claimName: jellyfin-cache
         - name: media-storage
           persistentVolumeClaim:
             claimName: media-storage
