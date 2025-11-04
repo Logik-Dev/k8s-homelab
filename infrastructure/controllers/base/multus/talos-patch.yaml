@@ -5,6 +5,9 @@
     hostPath:
       path: /var/run/netns/
 - op: replace
+  path: /spec/template/spec/containers/0/resources/limits/memory
+  value: "512Mi"
+- op: replace
   path: /spec/template/spec/initContainers/0/command
   value:
     - "/usr/src/multus-cni/bin/install_multus"
