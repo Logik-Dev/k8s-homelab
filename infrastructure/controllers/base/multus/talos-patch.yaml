@@ -4,7 +4,7 @@
     name: host-run-netns
     hostPath:
       path: /var/run/netns/
-- op: replace
+- op: add
   path: /spec/template/spec/containers/0/resources/limits/memory
   value: "512Mi"
 - op: replace
