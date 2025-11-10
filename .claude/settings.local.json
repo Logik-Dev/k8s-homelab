@@ -1,12 +1,24 @@
 {
   "permissions": {
     "allow": [
+      "Bash(find:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl exec:*)",
       "Bash(kubectl get:*)",
-      "Bash(tofu state mv 'module.cluster.libvirt_domain.talos_vm[0]' 'module.cluster.module.vms.libvirt_domain.talos_vm[0]')",
-      "Bash(tofu init:*)",
-      "Bash(rm:*)",
-      "Bash(kubectl kustomize:*)"
+      "Bash(python3:*)",
+      "Bash(for hash in 6c7879983c2eea4e0c18f696c7a05f8022780e80 2cae1dcb6fd5f696a08eeb4d8c23c19829b98e5c 82ff7843269ad24a2b700ef854ebc5e896c35269 8ceb55c736262e3eb469738d9d2a01c256e38c4c 7464873bb48a1f53cf7bfec5d6ae9b5fd4061daa 64f8aa7e503d0d0ad2f61ecabb19c25f2b81cd74 3f076c125aa5973f610f712c0040c8600ecb191d)",
+      "Bash(do)",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(kubectl api-resources:*)",
+      "Bash(kubectl delete:*)",
+      "Read(//proc/**)",
+      "Bash(dmesg:*)",
+      "Bash(lsmod:*)",
+      "WebSearch"
     ],
-    "deny": []
+    "deny": [],
+    "ask": []
   }
 }
