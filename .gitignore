@@ -5,6 +5,7 @@ dev-talosconfig
 prod-talosconfig
 dev-kubeconfig
 prod-kubeconfig
+hyper-kubeconfig.yaml
 
 # Terraform files
 **/.terraform/
