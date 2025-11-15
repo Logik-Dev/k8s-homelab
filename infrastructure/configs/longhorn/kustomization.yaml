@@ -5,3 +5,4 @@ resources:
   - storage-class.yaml
   - snapshot-class.yaml
   - tailscale.yaml
+  - httproute.yaml
