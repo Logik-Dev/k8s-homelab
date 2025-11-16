@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-    name: longhorn-minio-credentials
+    name: minio-credentials
     namespace: longhorn-system
 type: Opaque
 stringData:
@@ -20,8 +20,8 @@ sops:
             MGNwOG10OUFCTHJ1K1g1aUo3VlN4Z2sKXva5dRj6GClHWMD6l+jas/XxArCErb/X
             KIHpJ1Y0TvLQrjP/IN5sh/+ajaDNlZ3SGIAHz8OANHKnl/P9yvCv9Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-16T07:01:51Z"
-    mac: ENC[AES256_GCM,data:Zk1zKATUpYIICIbDlcs9eKFRnc12drNXFEeTtlt6/BbeY9gYuriEQm1O3N+SUTMgVXR8i4Zp0Z7JvPRpiUVV5j8BC0mG7tkd3ZBVmTU0wWsVyHgzyFzYr31vkk74CSN3dvQRtGIGWL++skFY2QapufTepWy0bJXX7kOEZ4EAsRc=,iv:VA5SbetlOKvG97z7/Le0pLRNKQCPgjmXcfCde7t5nK0=,tag:wgJ16O18Gk9/1tY7SYEhrA==,type:str]
+    lastmodified: "2025-11-16T07:41:17Z"
+    mac: ENC[AES256_GCM,data:5Svo7YGK75BEWzvRKSA9nVJZLBEk7RlOFnZM9wYtzXcRmkfhOwbayvb8IG1Cus0rpHUyes+qIEZ1o2l1oiKXfMhBZfflGhoozrPnU5rHT/vFDh4GNW2jVLq4Di1Clv879aP3JKa3iqzwlkxqDYeX9cq+RN1YwUKzYuXx7D+8keA=,iv:rHh3R+Tzh86JvtSnt2ZGqjG2zDowrHz+uQApg27SoSo=,tag:xGiUuUHwB8lLkSE4e/Us/A==,type:str]
     pgp:
         - created_at: "2025-08-15T21:30:48Z"
           enc: |-

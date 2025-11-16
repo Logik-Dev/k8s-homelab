@@ -22,7 +22,7 @@ spec:
       storageOverProvisioningPercentage: 200
     defaultBackupStore:
       backupTarget: s3://longhorn@us-east-1/
-      backupTargetCredentialSecret: longhorn-minio-credentials
+      backupTargetCredentialSecret: minio-credentials
       pollInterval: 180
     csi:
       attacherReplicaCount: 1
