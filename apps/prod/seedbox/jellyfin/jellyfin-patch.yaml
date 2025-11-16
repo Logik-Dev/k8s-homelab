@@ -1,7 +1,0 @@
-- op: add
-  path: /spec/template/spec/runtimeClassName
-  value: nvidia
-- op: add
-  path: /spec/template/spec/containers/0/resources/limits
-  value:
-    nvidia.com/gpu: 1

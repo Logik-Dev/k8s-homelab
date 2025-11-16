@@ -1,9 +1,0 @@
-machine:
-  network:
-    interfaces:
-      - interface: eth0
-        dhcp: true
-      - interface: eth1
-        dhcp: false
-      - interface: eth2
-        dhcp: false
