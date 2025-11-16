@@ -1,9 +1,0 @@
-apiVersion: metallb.io/v1beta1
-kind: L2Advertisement
-metadata:
-  name: vlan200-advertisement
-spec:
-  ipAddressPools:
-    - vlan200-pool
-  interfaces:
-    - eth1
