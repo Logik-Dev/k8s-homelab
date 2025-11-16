@@ -5,3 +5,4 @@ resources:
   - longhorn-system.yaml
   - cert-manager.yaml
   - cnpg.yaml
+  - nvidia.yaml
