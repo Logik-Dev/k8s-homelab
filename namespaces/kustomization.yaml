@@ -4,3 +4,4 @@ resources:
   - tailscale.yaml
   - longhorn-system.yaml
   - cert-manager.yaml
+  - cnpg.yaml
