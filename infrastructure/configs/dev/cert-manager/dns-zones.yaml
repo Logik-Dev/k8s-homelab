@@ -1,5 +1,0 @@
-- op: add
-  path: /spec/acme/solvers/0/selector
-  value:
-    dnsZones:
-      - "k8sd.home.logikdev.fr"
