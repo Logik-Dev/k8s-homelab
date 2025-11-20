@@ -8,3 +8,4 @@ resources:
   - nvidia.yaml
   - traefik.yaml
   - networking.yaml
+  - vaultwarden.yaml
