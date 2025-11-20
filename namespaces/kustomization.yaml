@@ -6,3 +6,4 @@ resources:
   - cert-manager.yaml
   - nvidia.yaml
   - networking.yaml
+  - vaultwarden.yaml
