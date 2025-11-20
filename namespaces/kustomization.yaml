@@ -7,3 +7,4 @@ resources:
   - cnpg.yaml
   - nvidia.yaml
   - traefik.yaml
+  - networking.yaml
