@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+spec:
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: networking/macvlan-iot
+    spec:
+      containers:
+        - name: homeassistant
+          image: ghcr.io/home-assistant/home-assistant:2025.12.0
+          ports:
+            - containerPort: 8123
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+          env:
+            - name: TZ
+              value: "Europe/Paris"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+      volumes:
+        - name: config-volume
+          persistentVolumeClaim:
+            claimName: homeassistant-longhorn
