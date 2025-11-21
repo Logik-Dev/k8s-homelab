@@ -1,0 +1,16 @@
+default_config:
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.42.0.0/16
+
+sonos:
+  media_player:
+    hosts:
+      - 192.168.21.232
+      - 192.168.21.185
+
+scene: !include scenes.yaml
+scene: !include scenes.yaml
+script: !include scripts.yaml
+automation: !include automations.yaml
