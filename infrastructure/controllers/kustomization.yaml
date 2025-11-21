@@ -8,3 +8,4 @@ resources:
   - nvidia
   - traefik
   - generic-device-plugin
+  - multus
