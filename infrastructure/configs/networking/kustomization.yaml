@@ -6,4 +6,4 @@ resources:
   - gateway.yaml
   - ip-pool.yaml
   - l2-policy.yaml
-  - macvlan-iot.yaml
+#  - macvlan-iot.yaml
