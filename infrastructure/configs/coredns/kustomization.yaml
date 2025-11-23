@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kube-system
+
+resources:
+  - custom-config.yaml
+
+patches:
+  # Monter la ConfigMap custom
+  - target:
+      kind: Deployment
+      name: coredns
+    patch: |-
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value:
+          name: coredns-custom
+          configMap:
+            name: coredns-custom
+            defaultMode: 420
+            optional: true
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value:
+          name: coredns-custom
+          mountPath: /etc/coredns/custom
+          readOnly: true
+
+  # Forcer le redémarrage après modification
+  - target:
+      kind: Deployment
+      name: coredns
+    patch: |-
+      - op: add
+        path: /spec/template/metadata/annotations/coredns-custom-hash
+        value: "update-me-to-force-restart"

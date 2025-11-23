@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  logikdev.server: |
+    logikdev.fr:53 {
+        errors
+        cache 30
+        forward . 192.168.10.100
+        log
+    }
+
+  ads.server: |
+    ads:53 {
+        errors
+        cache 300
+        hosts {
+           127.0.0.1 ads.google.com
+           127.0.0.1 doubleclick.net
+           127.0.0.1 googleadservices.com
+           127.0.0.1 googlesyndication.com
+           127.0.0.1 analytics.google.com
+           127.0.0.1 www.google-analytics.com
+           fallthrough
+        }
+        log
+    }
