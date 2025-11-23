@@ -1,0 +1,18 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: matter
+spec:
+  hostnames:
+    - "matter.k8s.logikdev.fr"
+  parentRefs:
+    - name: traefik-gateway
+      namespace: traefik
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: matter
+          port: 80

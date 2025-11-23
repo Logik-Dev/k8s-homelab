@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matter
+spec:
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: networking/macvlan-iot
+    spec:
+      containers:
+        - name: matter
+          image: ghcr.io/t0bst4r/home-assistant-matter-hub:latest
+          ports:
+            - containerPort: 8482
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: HAMH_HOME_ASSISTANT_URL
+              value: "https://hass.k8s.logikdev.fr"
+            - name: HAMH_HTTP_PORT
+              value: "8482"
+          envFrom:
+            - secretRef:
+                name: matter
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: matter-longhorn

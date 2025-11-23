@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matter
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - matter
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: matter
+                port:
+                  number: 80
