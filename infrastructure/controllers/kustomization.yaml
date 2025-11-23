@@ -6,3 +6,4 @@ resources:
   - cnpg
   - cert-manager
   - nvidia
+  - traefik
