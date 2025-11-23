@@ -1,0 +1,47 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+spec:
+  interval: 24h
+  chart:
+    spec:
+      chart: traefik
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+      interval: 24h
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 3
+  driftDetection:
+    mode: enabled
+  values:
+    ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+    gateway:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
+      listeners:
+        websecure:
+          port: 8443
+          protocol: HTTPS
+          hostname: "*.k8s.logikdev.fr"
+          namespacePolicy:
+            from: All
+          certificateRefs:
+            - name: k8s-logikdev-fr-tls
+          mode: Terminate
+    providers:
+      kubernetesGateway:
+        enabled: true
+      kubernetesCRD:
+        allowCrossNamespace: true
