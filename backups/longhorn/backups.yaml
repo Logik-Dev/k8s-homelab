@@ -1,0 +1,16 @@
+apiVersion: longhorn.io/v1beta2
+kind: RecurringJob
+metadata:
+  name: weekly-backup
+  namespace: longhorn-system
+spec:
+  cron: "0 17 * * 3"
+  task: backup
+  retain: 8
+  groups:
+    - weekly-backup
+  labels:
+    group: weekly-backup
+    frequency: weekly
+    type: backup
+  concurrency: 2
