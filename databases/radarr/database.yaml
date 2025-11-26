@@ -1,0 +1,55 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: radarr-db
+  namespace: seedbox
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17 #
+  bootstrap:
+    recovery:
+      owner: radarr
+      source: source
+      secret:
+        name: radarr-db-secrets
+  storage:
+    storageClass: longhorn
+    size: 20Gi
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: radarr-store
+          serverName: radarr-3
+  backup:
+    volumeSnapshot:
+      className: longhorn
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: radarr-store
+        serverName: radarr-4
+# Radarr Main DB
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: radarr-main
+spec:
+  name: radarr-main
+  owner: radarr
+  cluster:
+    name: radarr-db
+---
+# Radarr Logs DB
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: radarr-logs
+spec:
+  name: radarr-logs
+  owner: radarr
+  cluster:
+    name: radarr-db
