@@ -10,3 +10,4 @@ resources:
   - networking.yaml
   - vaultwarden.yaml
   - homeassistant.yaml
+  - seedbox.yaml

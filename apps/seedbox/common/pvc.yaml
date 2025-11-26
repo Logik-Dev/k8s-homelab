@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-medias
+  resources:
+    requests:
+      storage: 100Gi
