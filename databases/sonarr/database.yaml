@@ -1,0 +1,54 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: sonarr-db
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17 #
+  bootstrap:
+    recovery:
+      owner: sonarr
+      source: source
+      secret:
+        name: sonarr-db-secrets
+  storage:
+    storageClass: longhorn
+    size: 20Gi
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: sonarr-store
+          serverName: sonarr-4
+  backup:
+    volumeSnapshot:
+      className: longhorn
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: sonarr-store
+        serverName: sonarr-5
+# Sonarr Main DB
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-main
+spec:
+  name: sonarr-main
+  owner: sonarr
+  cluster:
+    name: sonarr-db
+---
+# Sonarr Logs DB
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sonarr-logs
+spec:
+  name: sonarr-logs
+  owner: sonarr
+  cluster:
+    name: sonarr-db
