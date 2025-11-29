@@ -9,3 +9,4 @@ resources:
   - traefik
   - generic-device-plugin
   - multus
+  - reflector
