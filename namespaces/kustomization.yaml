@@ -11,3 +11,4 @@ resources:
   - vaultwarden.yaml
   - homeassistant.yaml
   - seedbox.yaml
+  - reflector.yaml
