@@ -12,3 +12,4 @@ resources:
   - homeassistant.yaml
   - seedbox.yaml
   - reflector.yaml
+  - redis.yaml
