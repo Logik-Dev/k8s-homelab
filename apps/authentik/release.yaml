@@ -1,0 +1,121 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: authentik
+      version: 2025.10.2
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 3
+  driftDetection:
+    mode: enabled
+  values:
+    authentik:
+      secret_key: file:///authentik-secrets/secret_key
+
+      error_reporting:
+        enabled: false
+
+      postgresql:
+        host: authentik-db-rw
+        user: file:///postgres-creds/username
+        password: file:///postgres-creds/password
+
+      redis:
+        host: redis-master.redis.svc.cluster.local
+        password: file:///redis-creds/password
+
+      email:
+        from: authentik@logikdev.fr
+        host: smtp.gmail.com
+        port: 465
+        use_ssl: true
+        username: file:///authentik-secrets/smtp_username
+        password: file:///authentik-secrets/smtp_password
+
+    postgresql:
+      enabled: false
+
+    redis:
+      enabled: false
+
+    server:
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - authentik.k8s.logikdev.fr
+          parentRefs:
+            - name: traefik-gateway
+              namespace: traefik
+
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: authentik-db-secrets
+        - name: redis-creds
+          secret:
+            secretName: redis-auth
+        - name: authentik-secrets
+          secret:
+            secretName: authentik-secrets
+
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
+        - name: redis-creds
+          mountPath: /redis-creds
+          readOnly: true
+        - name: authentik-secrets
+          mountPath: /authentik-secrets
+          readOnly: true
+
+    worker:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+
+      volumes:
+        - name: postgres-creds
+          secret:
+            secretName: authentik-db-secrets
+        - name: redis-creds
+          secret:
+            secretName: redis-auth
+        - name: authentik-secrets
+          secret:
+            secretName: authentik-secrets
+
+      volumeMounts:
+        - name: postgres-creds
+          mountPath: /postgres-creds
+          readOnly: true
+        - name: redis-creds
+          mountPath: /redis-creds
+          readOnly: true
+        - name: authentik-secrets
+          mountPath: /authentik-secrets
+          readOnly: true

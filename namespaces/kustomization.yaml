@@ -13,3 +13,4 @@ resources:
   - seedbox.yaml
   - reflector.yaml
   - redis.yaml
+  - authentik.yaml
