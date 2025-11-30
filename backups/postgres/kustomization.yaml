@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - authentik.yaml
   - radarr.yaml
+  - sonarr.yaml
