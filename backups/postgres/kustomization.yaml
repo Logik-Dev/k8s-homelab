@@ -4,3 +4,4 @@ resources:
   - authentik.yaml
   - radarr.yaml
   - sonarr.yaml
+  - vaultwarden.yaml
