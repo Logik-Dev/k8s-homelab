@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - cm.yaml
+  - deployment.yaml
+  - pvc.yaml
+  - service.yaml
+commonLabels:
+  app: immich-machine-learning

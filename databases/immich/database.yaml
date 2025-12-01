@@ -1,0 +1,39 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-db
+spec:
+  instances: 2
+  bootstrap:
+    initdb:
+      database: immich
+      owner: immich
+      secret:
+        name: immich-db-credentials
+  storage:
+    size: 30Gi
+    storageClass: longhorn
+  backup:
+    volumeSnapshot:
+      className: longhorn
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: immich-store
+        serverName: immich-2
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: immich
+  namespace: immich
+spec:
+  name: immich
+  owner: immich
+  cluster:
+    name: immich-db
+  extensions:
+    - name: vector
+    - name: earthdistance
+    - name: cube

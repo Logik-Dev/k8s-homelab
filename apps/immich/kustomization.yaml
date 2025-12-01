@@ -1,7 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kube-system
+namespace: immich
 resources:
-  - base-cm.yaml
-  - medias.yaml
-  - immich.yaml
+  - machine-learning
+  - server

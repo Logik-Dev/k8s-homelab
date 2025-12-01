@@ -14,3 +14,4 @@ resources:
   - reflector.yaml
   - redis.yaml
   - authentik.yaml
+  - immich.yaml
