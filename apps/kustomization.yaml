@@ -7,3 +7,4 @@ resources:
   - seedbox
   - authentik
   - immich
+  - ollama
