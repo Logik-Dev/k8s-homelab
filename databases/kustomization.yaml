@@ -8,3 +8,4 @@ resources:
   - redis
   - authentik
   - immich
+  - n8n

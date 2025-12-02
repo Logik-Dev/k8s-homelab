@@ -1,0 +1,22 @@
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: n8n-store
+spec:
+  retentionPolicy: "90d"
+  configuration:
+    destinationPath: s3://n8n
+    endpointURL: https://s3.hyper.logikdev.fr
+    s3Credentials:
+      accessKeyId:
+        name: n8n-minio-credentials
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: n8n-minio-credentials
+        key: AWS_SECRET_ACCESS_KEY
+    wal:
+      compression: gzip
+      maxParallel: 1
+    data:
+      compression: gzip

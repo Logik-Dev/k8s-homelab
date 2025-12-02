@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: n8n
+data:
+  GENERIC_TIME_ZONE: Europe/Paris
+  TZ: Europe/Paris
+  N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+  N8N_RUNNERS_ENABLED: "true"
+  N8N_PORT: "80"
+  DB_TYPE: postgresdb
+  DB_POSTGRESDB_DATABASE: n8n
+  DB_POSTGRESDB_HOST: n8n-db-rw
+  DB_POSTGRESDB_PORT: "5432"
+  DB_POSTGRESDB_USER: n8n
+  DB_POSTGRESDB_SCHEMA: n8n
+  N8N_HOST: n8n.k8s.logikdev.fr
+  N8N_PROTOCOL: https
+  NODE_ENV: production
+  WEBHOOK_URL: https://n8n.k8s.logikdev.fr/

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+spec:
+  template:
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: n8n
+          image: n8nio/n8n:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_POSTGRESDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: n8n-db-secrets
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: n8n
+          volumeMounts:
+            - name: n8n-config
+              mountPath: /home/node/.n8n
+      volumes:
+        - name: n8n-config
+          persistentVolumeClaim:
+            claimName: n8n-longhorn

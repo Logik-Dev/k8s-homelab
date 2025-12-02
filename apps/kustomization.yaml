@@ -8,3 +8,4 @@ resources:
   - authentik
   - immich
   - ollama
+  - n8n

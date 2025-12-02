@@ -16,3 +16,4 @@ resources:
   - authentik.yaml
   - immich.yaml
   - ollama.yaml
+  - n8n.yaml
