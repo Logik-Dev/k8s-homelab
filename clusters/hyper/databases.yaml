@@ -6,6 +6,7 @@ metadata:
 spec:
   dependsOn:
     - name: infra-configs
+    - name: infra-controllers
   interval: 10m0s
   sourceRef:
     kind: GitRepository

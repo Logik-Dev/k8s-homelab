@@ -9,3 +9,4 @@ resources:
   - authentik
   - immich
   - n8n
+#  - rag
